@@ -9,17 +9,18 @@
 
     <title>Dashboard Template for Bootstrap</title>
 
-    <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
         crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/stupid-responsive-table.css">
+
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
         crossorigin="anonymous"></script>
+    <script src="/js/stupid-responsive-table.js"></script>
 
-    <link rel="stylesheet" href="/css/stupid-responsive-table.css">
 </head>
 
 <body>
@@ -65,66 +66,69 @@
                 <div id="charts" class="collapse in pb-2">
                     <section class="row">
 
-                        {{#positions}}
-                            {{^closedPnl}}
-                                <div class="col-sm">
-                                    <a target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
-                                        <!-- http://www.networkerror.org/component/content/44.html?task=view -->
-                                        <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=5d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 5 days of trading price for the stock symbol {{symbol}}"
-                                        />
-                                    </a>
-                                    <h4><a href="/stock/{{symbolId}}">{{symbol}}</a></h4>
-                                    <span class="text-muted">&dollar;{{currentPrice}}</span>
-                                </div>
-                            {{/closedPnl}}
-                        {{/positions}}
+                        {{#positions}} {{^closedPnl}}
+                        <div class="col-sm">
+                            <a target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
+                                <!-- http://www.networkerror.org/component/content/44.html?task=view -->
+                                <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=5d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 5 days of trading price for the stock symbol {{symbol}}"
+                                />
+                            </a>
+                            <h4>
+                                <a href="/stock/{{symbolId}}">{{symbol}}</a>
+                            </h4>
+                            <span class="text-muted">&dollar;{{currentPrice}}</span>
+                        </div>
+                        {{/closedPnl}} {{/positions}}
 
                     </section>
                 </div>
 
                 <h2>Your Positions</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Symbol</th>
-                                <th>Quantity</th>
-                                <th>Purchase Price</th>
-                                <th>Current Price</th>
-                                <th>&#37; Total Account (CAD)</th><!-- TODO? This value is roughly calculated.. -->
-                                <th>Dividend</th>
-                                <th>&#37; Profit/Loss</th>
-                                <th>&#36; Profit/Loss</th>
-                                <th>&#8693;</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#positions}}
-                                {{^closedPnl}}
-                                    {{#isUp}}<tr class="text-success">{{/isUp}}
-                                    {{^isUp}}<tr class="text-danger">{{/isUp}}
-                                        <td>
-                                            {{symbol}}
-                                            {{#isCanadian}} <img alt="Canadian Currency" width="20" src="/img/flag_canada.png" />{{/isCanadian}}
-                                            {{#isAmerican}} <img alt="American Currency" width="20" src="/img/flag_usa.png" />{{/isAmerican}}
-                                        </td>
-                                        <td>{{openQuantity}}</td>
-                                        <td>{{averageEntryPrice}}</td>
-                                        <td>{{currentPrice}}</td>
-                                        <td>
-                                            <progress value="{{percentageTotalCad}}" max="100"></progress>
-                                            <small class="text-muted">{{percentageTotalCad}} &#37;</small>
-                                        </td>
-                                        <td{{#additionalStockData.exDate}} title="Dividend ex-date: {{additionalStockData.exDate}}"{{/additionalStockData.exDate}}>{{additionalStockData.dividend}}</td>
-                                        <td>{{percentPnl}}&#37;</td>
-                                        <td>{{openPnl}}</td>
-                                        <td>{{#isUp}}&#8673;{{/isUp}}{{^isUp}}&#8675;{{/isUp}}</td>
-                                    </tr>
-                                {{/closedPnl}}
-                            {{/positions}}
-                        </tbody>
-                    </table>
-                </div>
+
+                <table id="miyazaki" class="table table-striped stupid-responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Quantity</th>
+                            <th>Purchase Price</th>
+                            <th>Current Price</th>
+                            <th>&#37; Total Account (CAD)</th>
+                            <!-- TODO? This value is roughly calculated.. -->
+                            <th>Dividend</th>
+                            <th>&#37; Profit/Loss</th>
+                            <th>&#36; Profit/Loss</th>
+                            <th>&#8693;</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#positions}} 
+                            {{^closedPnl}} 
+                                {{#isUp}}<tr class="text-success">{{/isUp}} 
+                                {{^isUp}}<tr class="text-danger">{{/isUp}}
+                                    <td>
+                                        {{symbol}} {{#isCanadian}}
+                                        <img alt="Canadian Currency" width="20" src="/img/flag_canada.png"
+                                        />{{/isCanadian}} {{#isAmerican}}
+                                        <img alt="American Currency" width="20" src="/img/flag_usa.png"
+                                        />{{/isAmerican}}
+                                    </td>
+                                    <td>{{openQuantity}}</td>
+                                    <td>{{averageEntryPrice}}</td>
+                                    <td>{{currentPrice}}</td>
+                                    <td>
+                                        <progress value="{{percentageTotalCad}}" max="100"></progress>
+                                        <small class="text-muted">{{percentageTotalCad}} &#37;</small>
+                                    </td>
+                                    <td{{#additionalStockData.exDate}} title="Dividend ex-date: {{additionalStockData.exDate}}" {{/additionalStockData.exDate}}>{{additionalStockData.dividend}}</td>
+                                    <td>{{percentPnl}}&#37;</td>
+                                    <td>{{openPnl}}</td>
+                                    <td>{{#isUp}}&#8673;{{/isUp}}{{^isUp}}&#8675;{{/isUp}}</td>
+                                </tr>
+                            {{/closedPnl}} 
+                        {{/positions}}
+                    </tbody>
+                </table>
+
             </main>
         </div>
     </div>

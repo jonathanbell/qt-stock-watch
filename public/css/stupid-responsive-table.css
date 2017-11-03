@@ -1,0 +1,27 @@
+.stupid-responsive-table {
+}
+
+@media screen and (max-width: 768px) {
+  table#miyazaki thead {
+    display: none;
+  }
+
+  table#miyazaki tbody td {
+    display: block;
+  }
+
+  table#miyazaki tr {
+    border-bottom: 3px solid gray;
+  }
+  table#miyazaki tr:last-of-type {
+    border-bottom: 0;
+  }
+
+  /* Where the magic happens. */
+  table#miyazaki tbody td:before {
+    content: attr(data-th);
+    color: gray;
+    display: inline-block;
+    width: 6rem;
+  }
+}
