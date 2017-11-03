@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    // extension name: HTML Snippets
+    "*.mustache": "html"
+  }
+}
