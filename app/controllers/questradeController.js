@@ -126,11 +126,24 @@ exports.dashboard = function(req, res) {
           res.render('dashboard', qtstocks);
         });
       }); // qt.getSymbols()
-    });
+    }); // qt.getPositions()
   }); // qt.on('ready')
 
   qt.on('error', function(err) {
     // TODO: Show the 500 error page
     console.error('PROBLEM with the Questrade API.');
-  }); // qt.on('error')
+  });
 }; // exports.dashboard
+
+exports.singleStock = function(req, res) {
+  var qt = new Questrade(process.env.QT_KEY);
+
+  qt.on('ready', function() {
+    res.render('singleStock', { stockSymbol: req.params.stockSymbol });
+  });
+
+  qt.on('error', function(err) {
+    // TODO: Show the 500 error page
+    console.error('PROBLEM with the Questrade API.');
+  });
+};

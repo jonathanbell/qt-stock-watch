@@ -1,151 +1,100 @@
-<!DOCTYPE html>
-<html lang="en">
+{{> partials/head}}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="Jonathan Bell">
-    <!-- <link rel="icon" href="../../favicon.ico"> -->
+<div class="container-fluid">
+    <div class="row">
 
-    <title>Dashboard Template for Bootstrap</title>
+        <main class="col-sm-12 pt-4">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/stupid-responsive-table.css">
+            <div class="row pb-2 pt-5">
+                <div class="col-sm">
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#charts" aria-expanded="false" aria-controls="charts">
+                        Show/Hide Charts
+                    </button>
+                </div>
+            </div>
 
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
-        crossorigin="anonymous"></script>
-        
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(function() {
-            var data = google.visualization.arrayToDataTable({{{googlePieChartData}}});
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-            chart.draw(data, {
-                title: 'Percent of Stocks, Bro'
-            });
-        });
-    </script>
-    
-    <script src="/js/stupid-responsive-table.js"></script>
+            <div id="charts" class="collapse in">
+                <section class="row pt-1">
 
-</head>
-
-<body>
-
-    <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
-
-        <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <h1 class="navbar-brand">QT Stock Watch</h1>
-
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
-                </li>
-            </ul>
-            <form class="form-inline mt-2 mt-md-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search does not work yet...">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
-
-    <div class="container-fluid">
-        <div class="row">
-
-            <main class="col-sm-12 pt-4">
-
-                <div class="row pb-2 pt-5">
+                    {{#positions}}{{^closedPnl}}
                     <div class="col-sm">
-                        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#charts" aria-expanded="false" aria-controls="charts">
-                            Show/Hide Charts
-                        </button>
+                        <a title="View Google financial data for {{symbol}}" target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
+                            <!-- http://www.networkerror.org/component/content/44.html?task=view -->
+                            <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=5d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 5 days of trading price for the stock symbol {{symbol}}"
+                            />
+                        </a>
+                        <h4>
+                            <a href="/stock/{{symbolId}}">{{symbol}}</a>
+                        </h4>
+                        <span class="text-muted">&dollar;{{currentPrice}}/share</span>
                     </div>
-                </div>
+                    {{/closedPnl}}{{/positions}}
+                    <div class="col-sm">
+                        <div class="card" id="piechart" style="width: 100%"></div>
+                    </div>
 
-                <div id="charts" class="collapse in">
-                    <section class="row pt-1">
+                </section>
+            </div>
 
-                        {{#positions}}{{^closedPnl}}
-                        <div class="col-sm">
-                            <a title="View Google financial data for {{symbol}}" target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
-                                <!-- http://www.networkerror.org/component/content/44.html?task=view -->
-                                <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=5d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 5 days of trading price for the stock symbol {{symbol}}"
-                                />
-                            </a>
-                            <h4>
-                                <a href="/stock/{{symbolId}}">{{symbol}}</a>
-                            </h4>
-                            <span class="text-muted">&dollar;{{currentPrice}}/share</span>
-                        </div>
-                        {{/closedPnl}}{{/positions}}
-                        <div class="col-sm">
-                            <div id="piechart" style="width: 99%"></div>
-                        </div>
+            <h2>Your Positions</h2>
 
-                    </section>
-                </div>
+            <table id="miyazaki" class="table table-striped stupid-responsive-table">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Quantity</th>
+                        <th>Purchase Price</th>
+                        <th>Current Price</th>
+                        <!-- TODO? This value is roughly calculated.. -->
+                        <!--<th>&#37; Total Account (CAD)</th>-->
+                        <th>Dividend</th>
+                        <th>&#37; Profit/Loss</th>
+                        <th>&#36; Profit/Loss</th>
+                        <th>&#8693;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#positions}} 
+                        {{^closedPnl}} 
+                            {{#isUp}}<tr class="text-success">{{/isUp}} 
+                            {{^isUp}}<tr class="text-danger">{{/isUp}}
+                                <td>
+                                    {{symbol}} {{#isCanadian}}
+                                    <img alt="Canadian Currency" width="20" src="/img/flag_canada.png"
+                                    />{{/isCanadian}} {{#isAmerican}}
+                                    <img alt="American Currency" width="20" src="/img/flag_usa.png"
+                                    />{{/isAmerican}}
+                                </td>
+                                <td>{{openQuantity}}</td>
+                                <td>{{averageEntryPrice}}</td>
+                                <td>{{currentPrice}}</td>
+                                <!-- <td>{{percentageTotalCad}}&#37;</td>-->
+                                <td{{#additionalStockData.exDate}} title="Dividend ex-date: {{additionalStockData.exDate}}" {{/additionalStockData.exDate}}>{{additionalStockData.dividend}}</td>
+                                <td>{{percentPnl}}&#37;</td>
+                                <td>{{openPnl}}</td>
+                                <td>{{#isUp}}&#8673;{{/isUp}}{{^isUp}}&#8675;{{/isUp}}</td>
+                            </tr>
+                        {{/closedPnl}} 
+                    {{/positions}}
+                </tbody>
+            </table>
 
-                <h2>Your Positions</h2>
-
-                <table id="miyazaki" class="table table-striped stupid-responsive-table">
-                    <thead>
-                        <tr>
-                            <th>Symbol</th>
-                            <th>Quantity</th>
-                            <th>Purchase Price</th>
-                            <th>Current Price</th>
-                            <!-- TODO? This value is roughly calculated.. -->
-                            <!--<th>&#37; Total Account (CAD)</th>-->
-                            <th>Dividend</th>
-                            <th>&#37; Profit/Loss</th>
-                            <th>&#36; Profit/Loss</th>
-                            <th>&#8693;</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#positions}} 
-                            {{^closedPnl}} 
-                                {{#isUp}}<tr class="text-success">{{/isUp}} 
-                                {{^isUp}}<tr class="text-danger">{{/isUp}}
-                                    <td>
-                                        {{symbol}} {{#isCanadian}}
-                                        <img alt="Canadian Currency" width="20" src="/img/flag_canada.png"
-                                        />{{/isCanadian}} {{#isAmerican}}
-                                        <img alt="American Currency" width="20" src="/img/flag_usa.png"
-                                        />{{/isAmerican}}
-                                    </td>
-                                    <td>{{openQuantity}}</td>
-                                    <td>{{averageEntryPrice}}</td>
-                                    <td>{{currentPrice}}</td>
-                                    <!-- <td>{{percentageTotalCad}}&#37;</td>-->
-                                    <td{{#additionalStockData.exDate}} title="Dividend ex-date: {{additionalStockData.exDate}}" {{/additionalStockData.exDate}}>{{additionalStockData.dividend}}</td>
-                                    <td>{{percentPnl}}&#37;</td>
-                                    <td>{{openPnl}}</td>
-                                    <td>{{#isUp}}&#8673;{{/isUp}}{{^isUp}}&#8675;{{/isUp}}</td>
-                                </tr>
-                            {{/closedPnl}} 
-                        {{/positions}}
-                    </tbody>
-                </table>
-
-            </main>
-        </div>
+        </main>
     </div>
+</div>
 
-</body>
+<script src="/js/stupid-responsive-table.js"></script>
 
-</html>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(function() {
+        var data = google.visualization.arrayToDataTable({{{googlePieChartData}}});
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, {
+            title: 'Percent of Current Market Value (CAD)'
+        });
+    });
+</script>
+
+{{> partials/foot}}
