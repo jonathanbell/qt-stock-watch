@@ -1,7 +1,11 @@
 .stupid-responsive-table {
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
+  table#miyazaki {
+    font-size: 150%;
+  }
+
   table#miyazaki thead {
     display: none;
   }
@@ -22,6 +26,6 @@
     content: attr(data-th);
     color: gray;
     display: inline-block;
-    width: 6rem;
+    width: 50%;
   }
 }

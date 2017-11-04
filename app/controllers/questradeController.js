@@ -49,6 +49,7 @@ exports.dashboard = function(req, res) {
         stock.isUp = isUp(stock);
         stock.percentPnl = calcProfitOrLoss(stock);
 
+        stock.currentPrice = stock.currentPrice.toFixed(2);
         stock.openPnl = parseFloat(stock.openPnl).toFixed(2);
         stock.averageEntryPrice = parseFloat(stock.averageEntryPrice).toFixed(
           2
@@ -124,6 +125,23 @@ exports.dashboard = function(req, res) {
                 100
               ).toFixed(2);
             });
+
+            // Make an array for use on the front-end
+            qtstocks.googlePieChartData = [
+              ['Stock', 'Percentage of Portfolio CAD']
+            ];
+            qtstocks.positions.forEach(function(stock, i) {
+              qtstocks.googlePieChartData.push([
+                stock.symbol,
+                parseFloat(stock.percentageTotalCad)
+              ]);
+            });
+
+            qtstocks.googlePieChartData = JSON.stringify(
+              qtstocks.googlePieChartData
+            );
+
+            console.log(qtstocks.googlePieChartData);
 
             //console.log('qtstocks', qtstocks);
             res.render('dashboard', qtstocks);

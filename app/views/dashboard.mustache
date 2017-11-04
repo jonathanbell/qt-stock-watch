@@ -19,6 +19,19 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
         crossorigin="anonymous"></script>
+        
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(function() {
+            var data = google.visualization.arrayToDataTable({{{googlePieChartData}}});
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, {
+                title: 'Percent of Stocks, Bro'
+            });
+        });
+    </script>
+    
     <script src="/js/stupid-responsive-table.js"></script>
 
 </head>
@@ -63,12 +76,12 @@
                     </div>
                 </div>
 
-                <div id="charts" class="collapse in pb-2">
-                    <section class="row">
+                <div id="charts" class="collapse in">
+                    <section class="row pt-1">
 
-                        {{#positions}} {{^closedPnl}}
+                        {{#positions}}{{^closedPnl}}
                         <div class="col-sm">
-                            <a target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
+                            <a title="View Google financial data for {{symbol}}" target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
                                 <!-- http://www.networkerror.org/component/content/44.html?task=view -->
                                 <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=5d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 5 days of trading price for the stock symbol {{symbol}}"
                                 />
@@ -76,9 +89,12 @@
                             <h4>
                                 <a href="/stock/{{symbolId}}">{{symbol}}</a>
                             </h4>
-                            <span class="text-muted">&dollar;{{currentPrice}}</span>
+                            <span class="text-muted">&dollar;{{currentPrice}}/share</span>
                         </div>
-                        {{/closedPnl}} {{/positions}}
+                        {{/closedPnl}}{{/positions}}
+                        <div class="col-sm">
+                            <div id="piechart" style="width: 99%"></div>
+                        </div>
 
                     </section>
                 </div>
@@ -92,8 +108,8 @@
                             <th>Quantity</th>
                             <th>Purchase Price</th>
                             <th>Current Price</th>
-                            <th>&#37; Total Account (CAD)</th>
                             <!-- TODO? This value is roughly calculated.. -->
+                            <!--<th>&#37; Total Account (CAD)</th>-->
                             <th>Dividend</th>
                             <th>&#37; Profit/Loss</th>
                             <th>&#36; Profit/Loss</th>
@@ -115,10 +131,7 @@
                                     <td>{{openQuantity}}</td>
                                     <td>{{averageEntryPrice}}</td>
                                     <td>{{currentPrice}}</td>
-                                    <td>
-                                        <progress value="{{percentageTotalCad}}" max="100"></progress>
-                                        <small class="text-muted">{{percentageTotalCad}} &#37;</small>
-                                    </td>
+                                    <!-- <td>{{percentageTotalCad}}&#37;</td>-->
                                     <td{{#additionalStockData.exDate}} title="Dividend ex-date: {{additionalStockData.exDate}}" {{/additionalStockData.exDate}}>{{additionalStockData.dividend}}</td>
                                     <td>{{percentPnl}}&#37;</td>
                                     <td>{{openPnl}}</td>

@@ -10,11 +10,20 @@ document.addEventListener(
       var current = headers[i];
       headertext.push(current.textContent.replace(/\r?\n|\r/, ''));
     }
+
     for (var i = 0, row; (row = tablebody.rows[i]); i++) {
       for (var j = 0, col; (col = row.cells[j]); j++) {
         col.setAttribute('data-th', headertext[j]);
       }
     }
+
+    $('#charts')
+      .on('hide.bs.collapse', function() {
+        $('body').css('overflow-x', 'initial');
+      })
+      .on('show.bs.collapse', function() {
+        $('body').css('overflow-x', 'hidden');
+      });
   },
   false
 ); // doc ready
