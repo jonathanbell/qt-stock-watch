@@ -1,11 +1,9 @@
-var Questrade = require('questrade');
-const request = require('request');
+const Questrade = require('questrade');
+const fixerController = require('./fixerController.js');
 
 var exports = (module.exports = {});
 
 exports.dashboard = function(req, res) {
-  // console.log('Dashboard using QT_KEY:', process.env.QT_KEY);
-
   // https://www.npmjs.com/package/questrade
   var qt = new Questrade(process.env.QT_KEY);
 
@@ -34,11 +32,9 @@ exports.dashboard = function(req, res) {
   };
 
   qt.on('ready', function() {
-    // console.log('Connected to Questrade API.');
-
     qt.getPositions(function(err, balances) {
       if (err) {
-        console.log('Error while trying to getPositions():', err);
+        console.error('Error while trying to getPositions():', err);
         res.status(404).render('404', {
           messages: { error: 'Failed to connect to Questrade API.' }
         });
@@ -64,7 +60,7 @@ exports.dashboard = function(req, res) {
       });
 
       qt.getSymbols(lookupSymbols, function(err, symbols) {
-        if (err) console.log(err); // TODO: handle this better
+        if (err) console.error(err); // TODO: handle this better
 
         qtstocks.positions.forEach(function(symbol, i) {
           // All the properties of `additionalStockData` can be seen here:
@@ -79,93 +75,62 @@ exports.dashboard = function(req, res) {
           }
         });
 
-        request(
-          {
-            method: 'GET',
-            uri: 'http://api.fixer.io/latest', // See: http://fixer.io/
-            qs: {
-              base: 'USD',
-              symbols: 'CAD' // Comma seperated list, please.
-            },
-            json: true,
-            headers: {
-              'Accept-Charset': 'utf-8',
-              'User-Agent': 'qt-stock-watch'
+        fixerController.getCadExchangeRate(function(err, cadExchangeRate) {
+          // TODO: handle this better
+          if (err) console.error('ERROR connecting to the Fixer API :/', err);
+
+          var totalCurrentPortfolioValue = 0;
+
+          qtstocks.positions.forEach(function(stock, i) {
+            if (stock.isAmerican) {
+              totalCurrentPortfolioValue =
+                totalCurrentPortfolioValue +
+                stock.openQuantity * stock.currentPrice * cadExchangeRate;
+              stock.totalCadValue =
+                stock.openQuantity * stock.currentPrice * cadExchangeRate;
             }
-          },
-          function(err, response, body) {
-            // TODO: handle this better
-            if (err) console.log('ERROR connecting to the Fixer API :/', err);
+            if (stock.isCanadian) {
+              totalCurrentPortfolioValue =
+                totalCurrentPortfolioValue +
+                stock.openQuantity * stock.currentPrice;
+              stock.totalCadValue = stock.openQuantity * stock.currentPrice;
+            }
+          });
 
-            const cadExchangeRate = body.rates.CAD;
-            var totalCurrentPortfolioValue = 0;
+          qtstocks.totalPortfolioValueCad = totalCurrentPortfolioValue;
 
-            qtstocks.positions.forEach(function(stock, i) {
-              if (stock.isAmerican) {
-                totalCurrentPortfolioValue =
-                  totalCurrentPortfolioValue +
-                  stock.openQuantity * stock.currentPrice * cadExchangeRate;
-                stock.totalCadValue =
-                  stock.openQuantity * stock.currentPrice * cadExchangeRate;
-              }
-              if (stock.isCanadian) {
-                totalCurrentPortfolioValue =
-                  totalCurrentPortfolioValue +
-                  stock.openQuantity * stock.currentPrice;
-                stock.totalCadValue = stock.openQuantity * stock.currentPrice;
-              }
-            });
+          // Now, calc the percentage of the whole portfolio
+          qtstocks.positions.forEach(function(stock, i) {
+            stock.percentageTotalCad = (stock.totalCadValue /
+              qtstocks.totalPortfolioValueCad *
+              100
+            ).toFixed(2);
+          });
 
-            qtstocks.totalPortfolioValueCad = totalCurrentPortfolioValue;
+          // Make an array for use on the front-end
+          qtstocks.googlePieChartData = [
+            ['Stock', 'Percentage of Portfolio CAD']
+          ];
+          qtstocks.positions.forEach(function(stock, i) {
+            qtstocks.googlePieChartData.push([
+              stock.symbol,
+              parseFloat(stock.percentageTotalCad)
+            ]);
+          });
 
-            // Now, calc the percentage of the whole portfolio
-            qtstocks.positions.forEach(function(stock, i) {
-              stock.percentageTotalCad = (stock.totalCadValue /
-                qtstocks.totalPortfolioValueCad *
-                100
-              ).toFixed(2);
-            });
+          qtstocks.googlePieChartData = JSON.stringify(
+            qtstocks.googlePieChartData
+          );
 
-            // Make an array for use on the front-end
-            qtstocks.googlePieChartData = [
-              ['Stock', 'Percentage of Portfolio CAD']
-            ];
-            qtstocks.positions.forEach(function(stock, i) {
-              qtstocks.googlePieChartData.push([
-                stock.symbol,
-                parseFloat(stock.percentageTotalCad)
-              ]);
-            });
-
-            qtstocks.googlePieChartData = JSON.stringify(
-              qtstocks.googlePieChartData
-            );
-
-            console.log(qtstocks.googlePieChartData);
-
-            //console.log('qtstocks', qtstocks);
-            res.render('dashboard', qtstocks);
-          }
-        );
+          // console.log('qtstocks', qtstocks);
+          res.render('dashboard', qtstocks);
+        });
       }); // qt.getSymbols()
-
-      // qt.getAccounts(function(err, accounts) {
-      //   if (err) {
-      //     console.log('Error while trying to getAccounts():', err);
-      //     res.status(404).render('404', {
-      //       messages: { error: 'Failed to connect to Questrade API.' }
-      //     });
-      //     return false;
-      //   }
-
-      //   // If it all went well, render the page! :)
-      //   res.render('dashboard', qtstocks);
-      // });
     });
   }); // qt.on('ready')
 
-  qt.on('error', function() {
+  qt.on('error', function(err) {
     // TODO: Show the 500 error page
     console.error('PROBLEM with the Questrade API.');
   }); // qt.on('error')
-};
+}; // exports.dashboard
