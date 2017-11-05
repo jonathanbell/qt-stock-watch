@@ -2,9 +2,9 @@ document.addEventListener(
   'DOMContentLoaded',
   function() {
     var headertext = [],
-      headers = document.querySelectorAll('#miyazaki th'),
-      tablerows = document.querySelectorAll('#miyazaki th'),
-      tablebody = document.querySelector('#miyazaki tbody');
+      headers = document.querySelectorAll('.stupid-responsive-table th'),
+      tablerows = document.querySelectorAll('.stupid-responsive-table th'),
+      tablebody = document.querySelector('.stupid-responsive-table tbody');
 
     for (var i = 0; i < headers.length; i++) {
       var current = headers[i];

@@ -17,3 +17,9 @@ charts don't display well if lots of stocks
 
 
 works with your MAIN account
+
+
+questrade API http://www.questrade.com/api/documentation/getting-started 
+
+
+ADD DATA TABLES!!! 

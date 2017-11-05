@@ -28,14 +28,14 @@ exports.dashboard = function(req, res) {
 
   // Object to pass to template
   var qtstocks = {
-    title: 'DASHBOARD BRO'
+    title: 'QT Stock Watch: Dashboard'
   };
 
   qt.on('ready', function() {
     qt.getPositions(function(err, balances) {
       if (err) {
-        console.error('Error while trying to getPositions():', err);
-        res.status(404).render('404', {
+        console.error('Error while trying to getPositions()', err);
+        res.status(500).render('500', {
           messages: { error: 'Failed to connect to Questrade API.' }
         });
         return false;
@@ -60,7 +60,13 @@ exports.dashboard = function(req, res) {
       });
 
       qt.getSymbols(lookupSymbols, function(err, symbols) {
-        if (err) console.error(err); // TODO: handle this better
+        if (err) {
+          console.error('Error while trying to getSymbols()', err);
+          res.status(500).render('500', {
+            messages: { error: 'Failed to connect to Questrade API.' }
+          });
+          return false;
+        }
 
         qtstocks.positions.forEach(function(symbol, i) {
           // All the properties of `additionalStockData` can be seen here:
@@ -73,11 +79,24 @@ exports.dashboard = function(req, res) {
           if (symbol.additionalStockData.currency == 'USD') {
             symbol.isAmerican = true;
           }
+          if (symbol.additionalStockData.exDate) {
+            symbol.additionalStockData.exDate = symbol.additionalStockData.exDate.split(
+              'T'
+            )[0];
+          }
         });
 
         fixerController.getCadExchangeRate(function(err, cadExchangeRate) {
-          // TODO: handle this better
-          if (err) console.error('ERROR connecting to the Fixer API :/', err);
+          if (err) {
+            console.error(
+              'Error while trying to connect to the Fixer API.',
+              err
+            );
+            res.status(500).render('500', {
+              messages: { error: 'Failed to connect to the Fixer.io API.' }
+            });
+            return false;
+          }
 
           var totalCurrentPortfolioValue = 0;
 
@@ -130,20 +149,82 @@ exports.dashboard = function(req, res) {
   }); // qt.on('ready')
 
   qt.on('error', function(err) {
-    // TODO: Show the 500 error page
-    console.error('PROBLEM with the Questrade API.');
-  });
+    console.error('Problem with the Questrade API.', err);
+
+    var error_msg = null;
+    if (err.details.message == 'login_failed') {
+      error_msg = 'Failed to log into Questrade.';
+    }
+
+    res.status(500).render('500', {
+      messages: {
+        error: error_msg
+      }
+    });
+  }); // qt.on('error')
 }; // exports.dashboard
 
 exports.singleStock = function(req, res) {
   var qt = new Questrade(process.env.QT_KEY);
 
   qt.on('ready', function() {
-    res.render('singleStock', { stockSymbol: req.params.stockSymbol });
+    qt.getSymbol(req.params.stockSymbol.toUpperCase(), function(err, symbol) {
+      if (err) {
+        console.error(
+          'User attempted to search for a stock that does not exist.',
+          err
+        );
+
+        var error_msg = 'Error while searching for stock.';
+
+        if (err.message == 'symbol_not_found') {
+          error_msg = 'Symbol not found in the Questrade database.';
+        }
+
+        res.status(404).render('404', {
+          messages: {
+            error: error_msg,
+            what: 'Stock'
+          }
+        });
+        return null;
+      }
+
+      var singleSymbol = symbol;
+
+      singleSymbol.symbolCapitalized = singleSymbol.symbol.toUpperCase();
+      singleSymbol.title = 'QT Stock Watch | ' + singleSymbol.symbolCapitalized;
+      singleSymbol.description =
+        singleSymbol.description.charAt(0).toUpperCase() +
+        singleSymbol.description.slice(1).toLowerCase() +
+        '.';
+      if (singleSymbol.currency == 'CAD') {
+        singleSymbol.isCanadian = true;
+      }
+      if (singleSymbol.currency == 'USD') {
+        singleSymbol.isAmerican = true;
+      }
+      if (singleSymbol.dividendDate) {
+        singleSymbol.dividendDate = singleSymbol.dividendDate.split('T')[0];
+      }
+      if (singleSymbol.exDate) {
+        singleSymbol.exDate = singleSymbol.exDate.split('T')[0];
+      }
+
+      res.render('singleStock', singleSymbol);
+    });
   });
 
   qt.on('error', function(err) {
-    // TODO: Show the 500 error page
-    console.error('PROBLEM with the Questrade API.');
+    console.error(
+      'Problem encountered while connecting with the Questrade API.',
+      err
+    );
+
+    res.status(500).render('500', {
+      messages: {
+        error: 'Problem encountered while connecting with the Questrade API.'
+      }
+    });
   });
 };

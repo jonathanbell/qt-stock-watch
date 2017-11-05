@@ -1,5 +1,73 @@
 {{> partials/head}}
 
-yeeooo {{stockSymbol}}
+<div class="jumbotron">
+    <div class="container pt-3">
+        <h1 class="display-3">
+            {{symbolCapitalized}}
+            {{#isCanadian}}
+                <img style="vertical-align: baseline;" alt="Canadian Currency" width="20" src="/img/flag_canada.png" />
+            {{/isCanadian}} 
+            {{#isAmerican}}
+                <img style="vertical-align: baseline;" alt="American Currency" width="20" src="/img/flag_usa.png"/>
+            {{/isAmerican}}
+        </h1>
+        <p>
+            {{description}} | 
+            {{#isTradable}}
+                Currently tradable ({{listingExchange}})
+            {{/isTradable}}
+            {{^isTradable}}
+                Currently not tradable ({{listingExchange}})
+            {{/isTradable}}
+        </p>
+        <p><a target="_blank" class="btn btn-primary btn-lg" href="https://my.questrade.com/trading/quote/{{symbolCapitalized}}" role="button">View on Questrade &raquo;</a></p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Price</h2>
+            <ul>
+                <li>52 Week High Price: ${{highPrice52}}</li>
+                <li>52 Week Low Price: ${{lowPrice52}}</li>
+                <li>Previous Day Closing Price: ${{prevDayClosePrice}}</li>
+            </ul>
+            <!--<p><a target="_blank" class="btn btn-secondary" href="https://my.questrade.com/trading/quote/{{symbolCapitalized}}" role="button">View on Questrade &raquo;</a></p>-->
+        </div>
+        <div class="col-md-4">
+            <h2>Dividend</h2>
+            <ul>
+                <li>Dividend: {{dividend}}</li>
+                {{#dividend}}<li>Dividend Yield: {{yield}}</li>{{/dividend}}
+                {{#dividendDate}}<li>Dividend Declaration Date: {{dividendDate}}</li>{{/dividendDate}}
+                {{#exDate}}<li>Dividend Ex-date: {{exDate}}</li>{{/exDate}}
+            </ul>
+        </div>
+        {{#pe}}
+            <div class="col-md-4">
+                <h2><a href="http://www.investopedia.com/terms/p/price-earningsratio.asp">Price-Earnings Ratio</a></h2>
+                <ul>
+                    <li>P/E Ratio: {{pe}}</li>
+                </ul>
+            </div>
+        {{/pe}}
+        <div class="col-md-4">
+            <h2>15 Day Chart</h2>
+            <a title="View Google financial data for {{description}}" target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
+                <!-- http://www.networkerror.org/component/content/44.html?task=view -->
+                <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=15d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 15 days of trading price for the stock symbol {{symbol}}" />
+            </a>
+        </div>
+    </div>
+    
+    <hr>
+
+    <footer>
+        <p><a target="_blank" class="btn btn-primary" href="https://my.questrade.com/Clients/en/home/default.aspx">Questrade Login</a></p>
+        <p>All of the possible getSymbol() properties are listed <a href="http://www.questrade.com/api/documentation/rest-operations/market-calls/symbols-id">here</a>.</p>
+    </footer>
+
+</div>
 
 {{> partials/foot}}

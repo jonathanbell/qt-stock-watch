@@ -20,17 +20,16 @@
                     <div class="col-sm">
                         <a title="View Google financial data for {{symbol}}" target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
                             <!-- http://www.networkerror.org/component/content/44.html?task=view -->
-                            <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=5d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 5 days of trading price for the stock symbol {{symbol}}"
-                            />
+                            <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=5d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 5 days of trading price for the stock symbol {{symbol}}" />
                         </a>
                         <h4>
-                            <a href="/stock/{{symbolId}}">{{symbol}}</a>
+                            <a href="/stock/{{symbol}}">{{symbol}}</a>
                         </h4>
                         <span class="text-muted">&dollar;{{currentPrice}}/share</span>
                     </div>
                     {{/closedPnl}}{{/positions}}
-                    <div class="col-sm">
-                        <div class="card" id="piechart" style="width: 100%"></div>
+                    <div class="col-sm mr-3 ml-3 card">
+                        <div id="piechart"></div>
                     </div>
 
                 </section>
@@ -38,15 +37,13 @@
 
             <h2>Your Positions</h2>
 
-            <table id="miyazaki" class="table table-striped stupid-responsive-table">
+            <table class="table table-striped stupid-responsive-table">
                 <thead>
                     <tr>
                         <th>Symbol</th>
                         <th>Quantity</th>
                         <th>Purchase Price</th>
                         <th>Current Price</th>
-                        <!-- TODO? This value is roughly calculated.. -->
-                        <!--<th>&#37; Total Account (CAD)</th>-->
                         <th>Dividend</th>
                         <th>&#37; Profit/Loss</th>
                         <th>&#36; Profit/Loss</th>
@@ -68,8 +65,7 @@
                                 <td>{{openQuantity}}</td>
                                 <td>{{averageEntryPrice}}</td>
                                 <td>{{currentPrice}}</td>
-                                <!-- <td>{{percentageTotalCad}}&#37;</td>-->
-                                <td{{#additionalStockData.exDate}} title="Dividend ex-date: {{additionalStockData.exDate}}" {{/additionalStockData.exDate}}>{{additionalStockData.dividend}}</td>
+                                <td style="cursor: default;" {{#additionalStockData.exDate}} title="Dividend ex-date: {{additionalStockData.exDate}}" {{/additionalStockData.exDate}}>{{additionalStockData.dividend}}</td>
                                 <td>{{percentPnl}}&#37;</td>
                                 <td>{{openPnl}}</td>
                                 <td>{{#isUp}}&#8673;{{/isUp}}{{^isUp}}&#8675;{{/isUp}}</td>
@@ -87,14 +83,16 @@
 
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <script>
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(function() {
-        var data = google.visualization.arrayToDataTable({{{googlePieChartData}}});
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-        chart.draw(data, {
-            title: 'Percent of Current Market Value (CAD)'
+    document.addEventListener('DOMContentLoaded', function() {
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(function() {
+            var data = google.visualization.arrayToDataTable({{{googlePieChartData}}});
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, {
+                title: 'Percent of Current Market Value (CAD)'
+            });
         });
-    });
+    }, false);
 </script>
 
 {{> partials/foot}}
