@@ -29,21 +29,22 @@
         <div class="col-md-4">
             <h2>Price</h2>
             <ul>
-                <li>52 Week High Price: ${{highPrice52}}</li>
-                <li>52 Week Low Price: ${{lowPrice52}}</li>
-                <li>Previous Day Closing Price: ${{prevDayClosePrice}}</li>
-            </ul>
-            <!--<p><a target="_blank" class="btn btn-secondary" href="https://my.questrade.com/trading/quote/{{symbolCapitalized}}" role="button">View on Questrade &raquo;</a></p>-->
-        </div>
-        <div class="col-md-4">
-            <h2>Dividend</h2>
-            <ul>
-                <li>Dividend: {{dividend}}</li>
-                {{#dividend}}<li>Dividend Yield: {{yield}}</li>{{/dividend}}
-                {{#dividendDate}}<li>Dividend Declaration Date: {{dividendDate}}</li>{{/dividendDate}}
-                {{#exDate}}<li>Dividend Ex-date: {{exDate}}</li>{{/exDate}}
+                <li class="text-success">&#8689; 52 Week High Price: ${{highPrice52}}</li>
+                <li class="text-danger">&#8690; 52 Week Low Price: ${{lowPrice52}}</li>
+                <li class="text-info">Previous Day Closing Price: ${{prevDayClosePrice}}</li>
             </ul>
         </div>
+        {{#dividend}}
+            <div class="col-md-4">
+                <h2>Dividend</h2>
+                <ul>
+                    <li>Dividend: {{dividend}}</li>
+                    <li>Dividend Yield: {{yield}}</li>
+                    {{#dividendDate}}<li>Dividend Declaration Date: {{dividendDate}}</li>{{/dividendDate}}
+                    {{#exDate}}<li>Dividend Ex-date: {{exDate}}</li>{{/exDate}}
+                </ul>
+            </div>
+        {{/dividend}}
         {{#pe}}
             <div class="col-md-4">
                 <h2><a href="http://www.investopedia.com/terms/p/price-earningsratio.asp">Price-Earnings Ratio</a></h2>
@@ -53,11 +54,16 @@
             </div>
         {{/pe}}
         <div class="col-md-4">
-            <h2>15 Day Chart</h2>
+            <h2><span id="swap-chart-heading-number">15</span> Day Chart</h2>
             <a title="View Google financial data for {{description}}" target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
                 <!-- http://www.networkerror.org/component/content/44.html?task=view -->
-                <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=15d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 15 days of trading price for the stock symbol {{symbol}}" />
+                <img id="swappable-chart" src="https://finance.google.com/finance/getchart?q={{symbol}}&p=15d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 15 days of trading price for the stock symbol {{symbol}}" />
             </a>
+            <p class="pt-1 pb-1">
+                <button data-chartswap="15" class="mt-1 mb-1 btn btn-secondary swap-chart">Show 15 Days</button>
+                <button data-chartswap="30" class="mt-1 mb-1 btn btn-secondary swap-chart">Show 30 Days</button>
+                <button data-chartswap="60" class="mt-1 mb-1 btn btn-secondary swap-chart">Show 60 Days</button>
+            </p>
         </div>
     </div>
     
@@ -69,5 +75,16 @@
     </footer>
 
 </div>
+
+<script>
+
+    $('.swap-chart').click(function() {
+        var newUrl = $('#swappable-chart').attr('src').substring(0, $('#swappable-chart').attr('src').length - 3);
+        newUrl = newUrl + $(this).attr('data-chartswap');
+        $('#swap-chart-heading-number').text($(this).attr('data-chartswap'));
+        $('#swappable-chart').attr('src', newUrl + 'd');
+    });
+
+</script>
 
 {{> partials/foot}}

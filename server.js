@@ -1,9 +1,9 @@
 // Express
 const express = require('express');
 const app = express();
-
-// cool
 app.use(express.static('public'));
+
+var PORT = process.env.PORT || 3000;
 
 // .env file support
 const env = require('dotenv').load();
@@ -27,10 +27,10 @@ app.use(function(req, res, next) {
   res.status(404).render('404');
 });
 
-app.listen(5000, function(err) {
-  if (!err) {
-    console.log('Site is listening on port 5000.');
+app.listen(PORT, function(err) {
+  if (err) {
+    console.error('Error while starting QT Stock Watch.', err);
   } else {
-    console.log(err);
+    console.log('Site is listening on port ' + PORT + '.');
   }
 });

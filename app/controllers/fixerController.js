@@ -9,7 +9,7 @@ exports.getCadExchangeRate = function(cb) {
       uri: 'http://api.fixer.io/latest', // See: http://fixer.io/
       qs: {
         base: 'USD',
-        symbols: 'CAD' // Comma seperated list, please.
+        symbols: 'CAD' // comma seperated list
       },
       json: true,
       headers: {

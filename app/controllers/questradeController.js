@@ -63,13 +63,16 @@ exports.dashboard = function(req, res) {
         if (err) {
           console.error('Error while trying to getSymbols()', err);
           res.status(500).render('500', {
-            messages: { error: 'Failed to connect to Questrade API.' }
+            messages: {
+              error:
+                'Failed to connect to Questrade API while looking up symbols.'
+            }
           });
           return false;
         }
 
         qtstocks.positions.forEach(function(symbol, i) {
-          // All the properties of `additionalStockData` can be seen here:
+          // All the properties of `symbol.additionalStockData` can be seen here:
           // http://www.questrade.com/api/documentation/rest-operations/market-calls/symbols-id
           symbol.additionalStockData = symbols[symbol.symbol];
 
@@ -118,14 +121,6 @@ exports.dashboard = function(req, res) {
 
           qtstocks.totalPortfolioValueCad = totalCurrentPortfolioValue;
 
-          // Now, calc the percentage of the whole portfolio
-          qtstocks.positions.forEach(function(stock, i) {
-            stock.percentageTotalCad = (stock.totalCadValue /
-              qtstocks.totalPortfolioValueCad *
-              100
-            ).toFixed(2);
-          });
-
           // Make an array for use on the front-end
           qtstocks.googlePieChartData = [
             ['Stock', 'Percentage of Portfolio CAD']
@@ -133,7 +128,7 @@ exports.dashboard = function(req, res) {
           qtstocks.positions.forEach(function(stock, i) {
             qtstocks.googlePieChartData.push([
               stock.symbol,
-              parseFloat(stock.percentageTotalCad)
+              parseFloat(stock.totalCadValue.toFixed(2))
             ]);
           });
 
@@ -142,14 +137,19 @@ exports.dashboard = function(req, res) {
           );
 
           // console.log('qtstocks', qtstocks);
+
+          // BOOM!
           res.render('dashboard', qtstocks);
-        });
+        }); // fixerController.getCadExchangeRate()
       }); // qt.getSymbols()
     }); // qt.getPositions()
   }); // qt.on('ready')
 
   qt.on('error', function(err) {
-    console.error('Problem with the Questrade API.', err);
+    console.error(
+      'Problem encountred while attempting to connect to the Questrade API.',
+      err
+    );
 
     var error_msg = null;
     if (err.details.message == 'login_failed') {
@@ -175,7 +175,7 @@ exports.singleStock = function(req, res) {
           err
         );
 
-        var error_msg = 'Error while searching for stock.';
+        var error_msg = 'Error while searching Questrade for symbol.';
 
         if (err.message == 'symbol_not_found') {
           error_msg = 'Symbol not found in the Questrade database.';
@@ -226,5 +226,5 @@ exports.singleStock = function(req, res) {
         error: 'Problem encountered while connecting with the Questrade API.'
       }
     });
-  });
-};
+  }); // qt.on('error')
+}; // exports.singleStock

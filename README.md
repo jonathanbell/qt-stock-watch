@@ -23,3 +23,6 @@ questrade API http://www.questrade.com/api/documentation/getting-started
 
 
 ADD DATA TABLES!!! 
+
+
+setup PORTs!!!!!!!!!!!!!!!!!!!!

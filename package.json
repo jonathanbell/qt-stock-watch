@@ -1,17 +1,14 @@
 {
   "name": "qt-stock-watch",
   "version": "0.0.1",
-  "description": "Displays your Questrade stock positions without authentication. The app cannot buy/sell stocks.",
+  "description":
+    "Displays your Questrade stock positions without authentication. The app cannot buy/sell stocks.",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "./node_modules/nodemon/bin/nodemon.js -e js,mustache ./server.js"
   },
-  "keywords": [
-    "stocks",
-    "portfolio",
-    "manager"
-  ],
+  "keywords": ["stocks", "portfolio", "manager", "Questrade"],
   "author": "Jonathan Bell",
   "license": "WTFPL",
   "dependencies": {

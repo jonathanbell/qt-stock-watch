@@ -2,7 +2,6 @@
 
 <div class="container-fluid">
     <div class="row">
-
         <main class="col-sm-12 pt-4">
 
             <div class="row pb-2 pt-5">
@@ -16,19 +15,22 @@
             <div id="charts" class="collapse in">
                 <section class="row pt-1">
 
-                    {{#positions}}{{^closedPnl}}
-                    <div class="col-sm">
-                        <a title="View Google financial data for {{symbol}}" target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
-                            <!-- http://www.networkerror.org/component/content/44.html?task=view -->
-                            <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=5d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 5 days of trading price for the stock symbol {{symbol}}" />
-                        </a>
-                        <h4>
-                            <a href="/stock/{{symbol}}">{{symbol}}</a>
-                        </h4>
-                        <span class="text-muted">&dollar;{{currentPrice}}/share</span>
-                    </div>
-                    {{/closedPnl}}{{/positions}}
+                    {{#positions}}
+                        {{^closedPnl}}
+                            <div class="col-sm">
+                                <a title="View Google financial data for {{symbol}}" target="_blank" href="https://finance.google.com/finance?q={{symbol}}">
+                                    <!-- http://www.networkerror.org/component/content/44.html?task=view -->
+                                    <img src="https://finance.google.com/finance/getchart?q={{symbol}}&p=5d" class="img-fluid img-thumbnail" alt="Stock history chart showing the last 5 days of trading price for the stock symbol {{symbol}}" />
+                                </a>
+                                <h4>
+                                    <a href="/stock/{{symbol}}">{{symbol}}</a>
+                                </h4>
+                                <span class="text-muted">&dollar;{{currentPrice}}/share</span>
+                            </div>
+                        {{/closedPnl}}
+                    {{/positions}}
                     <div class="col-sm mr-3 ml-3 card">
+                        <!-- Google Chart -->
                         <div id="piechart"></div>
                     </div>
 
@@ -65,9 +67,9 @@
                                 <td>{{openQuantity}}</td>
                                 <td>{{averageEntryPrice}}</td>
                                 <td>{{currentPrice}}</td>
-                                <td style="cursor: default;" {{#additionalStockData.exDate}} title="Dividend ex-date: {{additionalStockData.exDate}}" {{/additionalStockData.exDate}}>{{additionalStockData.dividend}}</td>
+                                <td style="cursor: default;" {{#additionalStockData.exDate}} title="Dividend Ex-date: {{additionalStockData.exDate}}" {{/additionalStockData.exDate}}>{{additionalStockData.dividend}}</td>
                                 <td>{{percentPnl}}&#37;</td>
-                                <td>{{openPnl}}</td>
+                                <td>&#36;{{openPnl}}</td>
                                 <td>{{#isUp}}&#8673;{{/isUp}}{{^isUp}}&#8675;{{/isUp}}</td>
                             </tr>
                         {{/closedPnl}} 
