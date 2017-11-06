@@ -1,6 +1,6 @@
 @media screen and (max-width: 768px) {
   table.stupid-responsive-table {
-    font-size: 150%;
+    font-size: 112.5%;
   }
 
   table.stupid-responsive-table thead {
@@ -9,6 +9,7 @@
 
   table.stupid-responsive-table tbody td {
     display: block;
+    padding: 3px;
   }
 
   table.stupid-responsive-table tr {

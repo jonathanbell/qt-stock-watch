@@ -38,3 +38,4 @@ Maybe, but, probably not. I made some assumptions when making the dashboard:
 ## TODOs
 
 1. Add [DataTables](https://datatables.net/) to main dashboard.
+1. Some Google charts are not displaying depending on the stock symbol. Fix this.

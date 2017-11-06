@@ -1,7 +1,7 @@
 {{> partials/head}}
 
 <div class="jumbotron">
-    <div class="container pt-3">
+    <div class="container pt-5">
         <h1 class="display-3">
             {{symbolCapitalized}}
             {{#isCanadian}}
@@ -12,7 +12,7 @@
             {{/isAmerican}}
         </h1>
         <p>
-            {{description}} | 
+            <a target="_blank" href="https://www.google.ca/search?q={{description}}">{{description}}</a> | 
             {{#isTradable}}
                 Currently tradable ({{listingExchange}})
             {{/isTradable}}

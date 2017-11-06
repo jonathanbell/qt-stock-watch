@@ -57,12 +57,13 @@
                         {{^closedPnl}} 
                             {{#isUp}}<tr class="text-success">{{/isUp}} 
                             {{^isUp}}<tr class="text-danger">{{/isUp}}
-                                <td>
-                                    {{symbol}} {{#isCanadian}}
-                                    <img alt="Canadian Currency" width="20" src="/img/flag_canada.png"
-                                    />{{/isCanadian}} {{#isAmerican}}
-                                    <img alt="American Currency" width="20" src="/img/flag_usa.png"
-                                    />{{/isAmerican}}
+                                <td>{{symbol}} 
+                                    {{#isCanadian}}
+                                        <img alt="Canadian Currency" width="20" src="/img/flag_canada.png" />
+                                    {{/isCanadian}}
+                                    {{#isAmerican}}
+                                        <img alt="American Currency" width="20" src="/img/flag_usa.png" />
+                                    {{/isAmerican}}
                                 </td>
                                 <td>{{openQuantity}}</td>
                                 <td>{{averageEntryPrice}}</td>
