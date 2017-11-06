@@ -31,12 +31,13 @@ The Questrade API is documented here: <http://www.questrade.com/api/documentatio
 
 ## Is This the Right Portfolio Manager/Monitor for Me?
 
-Maybe, but, probably not. I made some assumptions when making the dashboard:
+Maybe, but, probably not. I made some assumptions when making this dashboard:
 
-- The user would want to visulazie thier **main** Questrade account. In the future I may add the ability to switch between accounts. Currently, I only have one account - so I'd have to sign up for another one to test that particular functionality.
-- The user would own stocks & the user would own < 30 stocks. The visual display of > 30 stocks may just look "weird" using QT Stock Watch. The chart may not display well if a user owns a lot of differnet stocks.
+- The user wants to visulazie their **main** Questrade account. In the future I may add the ability to switch between accounts. Currently, I only have one account - so I'd have to sign up for another one to test that particular functionality.
+- The user owns stocks & the user owns < 30 stocks. The visual display of > 30 stocks may just look "weird" using QT Stock Watch. The charts may not display well if a user owns a lot of differnet stocks.
 
 ## TODOs
 
 1. Add [DataTables](https://datatables.net/) to main dashboard.
 1. Some Google charts are not displaying depending on the stock symbol. Fix this.
+1. Heroku(?) or Questrade(?) expire the tokens when you wouldn't expect them to expire. Need to find the cause of this as it's a big crux to a well working app.
