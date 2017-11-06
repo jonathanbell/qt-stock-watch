@@ -4,6 +4,15 @@ QT Stock Watch allows you to view your Questrade account without logging in. It 
 
 I recommend setting this application up at secret URL and bookmarking that URL. Then, you can quickly check your stock positions.
 
+## Installation on Heroku
+
+1. Clone this repository.
+1. Login to Heroku and [create a new app](https://dashboard.heroku.com/new-app).
+1. On the command line, `cd` to your `qt-stock-watch` directory.
+1. Login to Heroku on the command line: `heroku login`
+1. `heroku git:remote -a your-heroku-dyno-name` You can see the instructions for this at this URL: `https://dashboard.heroku.com/apps/your-heroku-dyno-name/deploy/heroku-git`
+1. Then, just `git push heroku master`
+
 ## Setup on Questrade
 
 1. Visit [the Questrade "My Apps" API webpage](https://login.questrade.com/APIAccess/userapps.aspx).
@@ -12,21 +21,13 @@ I recommend setting this application up at secret URL and bookmarking that URL. 
 1. After giving the app a name, click "Save"
 1. On the ["My apps" page](https://login.questrade.com/APIAccess/userapps.aspx), click "+ New Device" and then "Generate new token"
 1. Copy to the clipboard or write down your token. You will use this in the next part of the installation on Heroku.
-
-The Questrade API is documented here: <http://www.questrade.com/api/documentation/getting-started>
-
-## Installation on Heroku
-
-1. Clone this repository.
-1. Login to Heroku and [create a new app](https://dashboard.heroku.com/new-app).
-1. Visit the "Settings" tab of your app. (`https://dashboard.heroku.com/apps/your-heroku-dyno-name/settings`)
+1. At the Heroku Dashboard, visit the "Settings" tab of your app. (`https://dashboard.heroku.com/apps/your-heroku-dyno-name/settings`)
 1. Click "Reveal Config Vars"
 1. Add a config var with the KEY: `QT_KEY` and the VALUE of your Questrade token (see above).
 1. Click "Add".
-1. On the command line, `cd` to your `qt-stock-watch` directory.
-1. Login to Heroku on the command line: `heroku login`
-1. `heroku git:remote -a your-heroku-dyno-name` You can see the instructions for this at this URL: `https://dashboard.heroku.com/apps/your-heroku-dyno-name/deploy/heroku-git`
-1. Then, just `git push heroku master`
+1. QT Stock Watch should be up and running on your Heroku dyno. :dollar:
+
+The Questrade API is documented here: <http://www.questrade.com/api/documentation/getting-started>
 
 ## Is This the Right Portfolio Manager/Monitor for Me?
 
