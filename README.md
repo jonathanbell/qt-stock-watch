@@ -40,4 +40,4 @@ Maybe, but, probably not. I made some assumptions when making this dashboard:
 
 1. Add [DataTables](https://datatables.net/) to main dashboard.
 1. Some Google charts are not displaying depending on the stock symbol. Fix this.
-1. Heroku(?) or Questrade(?) expire the tokens when you wouldn't expect them to expire. Need to find the cause of this as it's a big crux to a well working app.
+1. Heroku(?) or Questrade(?) expire the tokens when you wouldn't expect them to expire. Need to find the cause of this as it's a big crux to a well working app. See Issue #1: <https://github.com/jonathanbell/qt-stock-watch/issues/1>
