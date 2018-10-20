@@ -1,3 +1,11 @@
+## Developer installation
+
+1. Clone this repo
+1. `cd qt-stock-watch`
+1. `npm install && cd client && npm install && cd ..`
+
+https://medium.freecodecamp.org/how-to-make-create-react-app-work-with-a-node-backend-api-7c5c48acb1b0
+
 # QT Stock Watch
 
 QT Stock Watch allows you to view your Questrade account without logging in. It helps when you just want to check your stock positions. The web application cannot make trades. It only visualizes your primary Questrade account. However, **please be aware** that this application will display your live Questrade positions to the Internet. If you have any reservations about this, please do not use the app.

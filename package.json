@@ -1,0 +1,25 @@
+{
+  "name": "qt-stock-watch",
+  "version": "1.0.2",
+  "scripts": {
+    "client": "cd client && npm run start",
+    "server": "nodemon server.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "start": "node server.js",
+    "deploy": "cd client && npm run build && cd .. && now"
+  },
+  "now": {
+    "dotenv": ".env.production",
+    "public": false
+  },
+  "engines": {
+    "node": ">=8.11.3 <=9.11.2"
+  },
+  "license": "WTFPL",
+  "dependencies": {
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0"
+  }
+}
