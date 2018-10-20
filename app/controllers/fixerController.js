@@ -3,10 +3,11 @@ const request = require('request');
 var exports = (module.exports = {});
 
 exports.getCadExchangeRate = function(cb) {
+  return 1.5;
   request(
     {
       method: 'GET',
-      uri: 'http://api.fixer.io/latest', // See: http://fixer.io/
+      uri: 'https://api.fixer.io/latest', // See: http://fixer.io/
       qs: {
         base: 'USD',
         symbols: 'CAD' // comma seperated list
@@ -18,6 +19,7 @@ exports.getCadExchangeRate = function(cb) {
       }
     },
     function(err, response, body) {
+      console.log(err, body.rates);
       return cb(err, body.rates.CAD);
     }
   );

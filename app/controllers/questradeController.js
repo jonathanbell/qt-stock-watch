@@ -136,7 +136,7 @@ exports.dashboard = function(req, res) {
             qtstocks.googlePieChartData
           );
 
-          // console.log('qtstocks', qtstocks);
+          console.log('qtstocks', qtstocks);
 
           // BOOM!
           res.render('dashboard', qtstocks);
