@@ -1,27 +1,26 @@
-const express = require('express');
-const path = require('path');
+require('dotenv').config({ path: '.env.development' });
+const mongoose = require('mongoose');
+mongoose.connect(
+  process.env.DATABASE,
+  { useNewUrlParser: true }
+);
+mongoose.Promise = global.Promise;
 
-const app = express();
+// Log database errors to the console.
+mongoose.connection.on('error', err => {
+  console.error(`Database connection error: ${err.message}`);
+});
+
+// Import mongoDB models:
+require('./models/Auth');
+
+// Require our Express app
+const app = require('./app');
 const port = process.env.PORT || 5000;
 
-// API calls
-app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Hello From Express' });
-});
-app.get('/api/hello-again', (req, res) => {
-  res.send({ express: 'Hello AGAIN From Express!' });
+// Start the app
+const server = app.listen(port, () => {
+  console.log(`Express is listening on port ${server.address().port}`);
 });
 
-if (process.env.NODE_ENV === 'production') {
-  app.get('/api/hello-from-prod', (req, res) => {
-    res.send({ express: 'Hello from prod!' });
-  });
-  // Serve any static files
-  app.use(express.static(path.join(__dirname, 'client/build')));
-  // Handle React routing, return all requests to React app
-  app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
-  });
-}
-
-app.listen(port, () => console.log(`Listening on port ${port}`));
+//app.listen(port, () => console.log(`Listening on port ${port}`));

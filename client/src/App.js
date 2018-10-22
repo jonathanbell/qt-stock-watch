@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
+import { Button } from 'reactstrap';
+
+import Navigation from './Navigation';
+import PositionsList from './PositionsList';
+import SearchBar from './SearchBar';
+
 import './App.css';
 
 class App extends Component {
@@ -25,21 +31,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p className="App-intro">{this.state.response}</p>
-          <p>
-            Edit <code>src/App.js</code> and save to reload. NEAT!!!
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+        <SearchBar />
+        <PositionsList />
+        <header>
+          <Navigation />
+          <Button color="danger">Danger!</Button>
         </header>
+        <p className="App-intro">{this.state.response}</p>
       </div>
     );
   }
