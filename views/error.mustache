@@ -6,19 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="Jonathan Bell <jonathanbell.ca@gmail.com>">
 
-    <title>qt-stock-watch</title>
+    <title>Error | QT Stock Watch</title>
 </head>
 
 <body>
 
-  <p>An error has occured.</p>
+  <h1>An error has occured.</h1>
 
-  {{#repo}}
-    <b>{{name}}</b>
-  {{/repo}}
-  message: {{message}}
-  <br>
-  status: {{status}}
+  {{#message}}
+    <p><strong>message:</strong> {{message}}</p>
+  {{/message}}
+
+  {{#status}}
+    <p><strong>status:</strong> {{status}}</p>
+  {{/status}}
+
+  {{#error}}
+    <p><strong>error:</strong> {{error}}</p>
+  {{/error}}
 
 </body>
 </html>

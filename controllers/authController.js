@@ -78,6 +78,7 @@ exports.getQuesttradeAuthorizationToken = async (req, res, next) => {
   req.api_server = newAuthKeys.api_server;
   req.token_type = newAuthKeys.token_type;
 
+  // TODO: remove this
   console.log(
     'Got new oAuth access_token from Questrade: ',
     req.access_token,

@@ -8,13 +8,6 @@
     "start": "node server.js",
     "deploy": "cd client && npm run build && cd .. && now"
   },
-  "now": {
-    "dotenv": ".env.production",
-    "public": false,
-    "alias": [
-      "qt-stock-watch"
-    ]
-  },
   "engines": {
     "node": ">=8.11.3 <=9.11.2"
   },
@@ -22,6 +15,7 @@
   "dependencies": {
     "dotenv": "^6.1.0",
     "express": "^4.16.2",
+    "md5": "^2.2.1",
     "moment": "^2.22.2",
     "mongoose": "^5.3.5",
     "mustache-express": "^1.2.8",

@@ -17,7 +17,7 @@ exports.notFound = (req, res, next) => {
 
 // Very handy!
 // Development error handling - shows useful errors while in development.
-// Based on `app.get('env')`
+// Based on `process.env.NODE_ENV`
 exports.developmentErrors = (err, req, res, next) => {
   err.stack = err.stack || '';
   const errorDetails = {
@@ -28,6 +28,7 @@ exports.developmentErrors = (err, req, res, next) => {
       '<mark>$&</mark>'
     )
   };
+  // console.error(err.stack);
   res.status(err.status || 500);
   res.format({
     // Based on the `Accept` http header...

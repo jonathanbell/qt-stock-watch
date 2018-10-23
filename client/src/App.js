@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 
 import { Button } from 'reactstrap';
 
-import Navigation from './Navigation';
-import PositionsList from './PositionsList';
-import SearchBar from './SearchBar';
+import Navigation from './components/Navigation';
+import PositionsList from './components/PositionsList';
+import SearchBar from './components/SearchBar';
 
-import './App.css';
+import './css/App.css';
 
 class App extends Component {
   state = {

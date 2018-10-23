@@ -11,7 +11,7 @@ const getPrimaryAccountNumber = async (req, res) => {
   });
 
   console.log(
-    // remove me
+    // TODO: remove me later
     `Requested: ${req.api_server}v1/accounts ${req.token_type} ${
       req.access_token
     }`

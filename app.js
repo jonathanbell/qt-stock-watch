@@ -8,8 +8,8 @@ const errorHandlers = require('./handlers/errorHandlers');
 const app = express();
 
 // Mustache - this is kinda silly rn.
-// We are only using express to serve JSON at the moment so none of these
-// templates should ever get served.
+// We are only using express to serve our JSON API at the moment so none of
+// these templates should ever get served (unless we hit a development error).
 const mustacheExpress = require('mustache-express');
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
@@ -24,13 +24,14 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Pass this stuff to *all requests*
+// These methods and values will be available on the `res` object.
 app.use((req, res, next) => {
   res.locals.helpers = helpers;
   res.locals.currentPath = req.path;
   next();
 });
 
-// Check that requests for JSON only come from this server
+// Attempt to limit access to our API
 app.use((req, res, next) => {
   // If the request doesn't come from blizzardjudge.com or from the Zeit deployment URL:
   // if (req.hostname !== process.env.APPHOST && req.hostname !== 'localhost') {
@@ -38,22 +39,25 @@ app.use((req, res, next) => {
   //   return res.redirect(`https://${process.env.APPHOST}${req.originalUrl}`);
   // }
 
+  console.log('req.hostname:', req.hostname);
+  // return error code and message?
+
   next();
 });
 
 // Handle all of our own (middleware) routes
 app.use('/', routes);
 
-// Routes above^^^ didn't work. Probably a 404. Call `errorHandlers.notFound`
+// Uh oh.. Routes above^^^ didn't work. Probably a 404.
 app.use(errorHandlers.notFound);
 
 // Really bad error... : |
 if (process.env.NODE_ENV === 'development') {
   // Development error handler
   app.use(errorHandlers.developmentErrors);
+} else {
+  // Production error handler
+  app.use(errorHandlers.productionErrors);
 }
-
-// Production error handler
-app.use(errorHandlers.productionErrors);
 
 module.exports = app;
