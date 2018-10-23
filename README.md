@@ -8,6 +8,8 @@ https://medium.freecodecamp.org/how-to-make-create-react-app-work-with-a-node-ba
 
 1. make file called `.env.production` and `.env.development`
 
+1. set usd exchange rate
+
 # QT Stock Watch
 
 QT Stock Watch allows you to view your Questrade account without logging in. It helps when you just want to check your stock positions. The web application cannot make trades. It only visualizes your primary Questrade account. However, **please be aware** that this application will display your live Questrade positions to the Internet. If you have any reservations about this, please do not use the app.
