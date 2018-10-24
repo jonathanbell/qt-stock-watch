@@ -24,8 +24,8 @@ const authSchema = new Schema({
 });
 
 authSchema.pre('save', async function(next) {
-  // Filter data here
-  //this.name = xss(this.name);
+  // Filter data you need to here
+  //this.updated = Date.now();
   next();
 });
 

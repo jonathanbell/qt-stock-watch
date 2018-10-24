@@ -5,7 +5,7 @@ const accountController = require('../controllers/accountController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 /**
- * API Calls (basically the only thing we are here for..)
+ * API Calls (basically the only thing we are using Express for..)
  */
 
 router.get(
@@ -18,6 +18,14 @@ router.get(
   '/api/v1/symbols/search/:prefix',
   catchErrors(authController.getQuesttradeAuthorizationToken),
   catchErrors(accountController.searchSymbol)
+);
+
+/**
+ * OAuth callbacks - not complete
+ */
+router.post(
+  '/catch-qt-authorization',
+  catchErrors(authController.getInitialQtOauth)
 );
 
 /**

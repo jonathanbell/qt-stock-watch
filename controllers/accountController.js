@@ -87,7 +87,24 @@ const getPositions = async (req, res) => {
   positionsEnhanced.forEach(position => {
     symbols.symbols.forEach(symbol => {
       if (symbol.symbolId === position.symbolId) {
+        // Add additional data from our call to `getStocksByIds`
+        position.dividend = symbol.dividend;
         position.currency = symbol.currency;
+        position.listingExchange = symbol.listingExchange;
+
+        // Calc the percentage profit/loss
+        let openCost = position.openQuantity * position.averageEntryPrice;
+        let currentCost = position.openQuantity * position.currentPrice;
+        let percentageStr = '';
+        let percentage = (1 - currentCost / openCost) * 100;
+        if (percentage < 0) {
+          percentageStr += percentage.toFixed(2).substring(1) + '%';
+          percentageStr = '+' + percentageStr;
+        } else {
+          percentageStr += '-';
+          percentageStr += percentage.toFixed(2) + '%';
+        }
+        position.percentagePnl = percentageStr;
       }
     });
 

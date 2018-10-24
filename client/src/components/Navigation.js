@@ -5,11 +5,10 @@ export default class Navigation extends Component {
   render() {
     return (
       <Nav>
-        <NavLink href="#">Link</NavLink> <NavLink href="#">Link</NavLink>{' '}
-        <NavLink href="#">Another Link</NavLink>{' '}
-        <NavLink disabled href="#">
-          Disabled Link
-        </NavLink>
+        <NavLink href="https://github.com/jonathanbell/qt-stock-watch">
+          Documentation
+        </NavLink>{' '}
+        {/* <NavLink href="#">Another Link</NavLink>{' '} */}
       </Nav>
     );
   }

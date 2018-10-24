@@ -2,21 +2,45 @@ import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 export default class SearchBar extends Component {
+  state = {
+    stockSymbolInput: ''
+  };
+
+  onStockSymbolSearchSubmit = e => {
+    e.preventDefault();
+    console.log(this.stockSymbolValue.value);
+  };
+
+  updateInput = e => {
+    this.setState({
+      stockSymbolInput: e.target.value
+        .trim()
+        .substring(0, 8)
+        .toUpperCase()
+    });
+    console.log(e.target.value);
+  };
+
   render() {
     return (
-      <Form inline>
+      <Form inline onSubmit={this.onStockSymbolSearchSubmit}>
         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-          <Label for="stockSymbol" className="mr-sm-2">
-            Search for a stock
+          <Label for="stockSymbolHardAss" className="mr-sm-2">
+            Enter a stock symbol to search for:
           </Label>
           <Input
-            type="text"
-            name="stockSymbol"
-            id="stockSymbol"
+            innerRef={node => (this.stockSymbolValue = node)}
+            value={this.state.stockSymbolInput}
             placeholder="STOCK.EX"
+            id="stockSymbol"
+            onChange={this.updateInput}
+            type="text"
+            name="stockSymbolHardAss"
           />
         </FormGroup>
-        <Button>Submit</Button>
+        <Button color="primary" type="submit">
+          Submit
+        </Button>
       </Form>
     );
   }

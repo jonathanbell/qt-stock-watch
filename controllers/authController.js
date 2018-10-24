@@ -14,19 +14,24 @@ exports.getQuesttradeAuthorizationToken = async (req, res, next) => {
   });
 
   if (!qtClient) {
-    res.json({ error: 'we all got problems..' });
+    res.json({
+      error: 'Cannot find Questtrade authorization details in database.'
+    });
   }
 
   const accessTokenExipry = moment(qtClient.updated).add(
-    // Subtract 3 minutes from possible expiry time, just to be sure.
-    qtClient.expires_in - 180,
+    // Subtract 5 minutes from possible expiry time, just to be sure.
+    qtClient.expires_in - 300,
     'seconds'
   );
 
-  if (accessTokenExipry.isBefore(moment(new Date()))) {
+  if (accessTokenExipry.isAfter(moment())) {
     req.access_token = qtClient.access_token;
     req.api_server = qtClient.api_server;
     req.token_type = qtClient.token_type;
+    // TODO: remove
+    console.log('Access token expires:', accessTokenExipry);
+    console.log('Time now:', moment());
     console.log('Old oAuth token is still valid:', req.access_token);
     return next();
   }
@@ -51,7 +56,7 @@ exports.getQuesttradeAuthorizationToken = async (req, res, next) => {
   if (response.status >= 300) {
     console.error(
       `Bad HTTP status from https://login.questrade.com/oauth2/token. HTTP status: ${
-        res.status
+        response.status
       }`
     );
     return next();
@@ -62,6 +67,7 @@ exports.getQuesttradeAuthorizationToken = async (req, res, next) => {
 
   // 3. Update the access token by re-writing it to the DB
 
+  newAuth.updated = Date.now();
   const newAuthKeys = await Auth.findOneAndUpdate(
     { client_id: process.env.QT_CONSUMER_KEY },
     newAuth,
@@ -88,40 +94,15 @@ exports.getQuesttradeAuthorizationToken = async (req, res, next) => {
   next();
 };
 
-// exports.test = (req, res) => {
-//   res.send({
-//     express: `Helloooooo From Express! ${
-//       req.access_token ? req.access_token : 'req.access_token is not set.'
-//     }`
-//   });
-// };
-
 exports.getInitialQtOauth = async (req, res, next) => {
-  // https://login.questrade.com/oauth2/authorize
-
-  // https://login.questrade.com/oauth2/authorize?client_id=E8EVxQBewzmPAdMcgACJsTs1lNtY7Q&response_type=code&redirect_uri=https://qt-stock-watch.now.sh
-  //res.redirect(`https://login.questrade.com/oauth2/authorize?client_id=${process.env.QT_CONSUMER_KEY}&response_type=code&redirect_uri=http://localhost:3001`)
-
-  const authCode = req.query.code;
-
-  // now send POST request to
-  // https://login.questrade.com/oauth2/token?client_id=E8EVxQBewzmPAdMcgACJsTs1lNtY7Q&code=j2v4WWcB-DLSAPAYBPLvL6TMZrzgYpfM0&grant_type=authorization_code&redirect_uri=https://qt-stock-watch.now.sh
-
-  ////////////////////
-
-  // https://login.questrade.com/oauth2/authorize?client_id=E8EVxQBewzmPAdMcgACJsTs1lNtY7Q&response_type=token&redirect_uri=https://qt-stock-watch.now.sh
-
-  // https://qt-stock-watch.now.sh/#access_token=rydkigC7sAPiJ6LQLZjgk3Ex6MitdXJa0&refresh_token=R0aGyWGbKy0AISuRcnKR6IBe93q3c-_U0&token_type=Bearer&expires_in=1800&api_server=https://api02.iq.questrade.com/
+  // TODO:
+  // Following the "Implicit Grant OAuth flow" here: https://www.questrade.com/api/documentation/authorization
+  // *IF* the configuration options do not exist ALREADY in the database (need to remove them upon app de-authorization):
+  // 1. Register a personal application with Questrade and get a API consumer key (aka client_id)
+  // 2. Be sure to add `https://your-applications-url.com/catch-qt-authorization` as your callback URL
+  // 3. Add your client ID to your `.env` file as the `QT_CONSUMER_KEY` value
+  // 4. Now send GET request to `https://login.questrade.com/oauth2/authorize?client_id=${process.env.QT_CONSUMER_KEY}&response_type=token&redirect_uri=https://${req.hostname}/catch-qt-authorization`
+  // 5. React will handle the GET request to `/catch-qt-authorization` and parse the URL for its "hash" values (URL will look something like this: `https://qt-stock-watch.now.sh/#access_token=XXX&refresh_token=XXX&token_type=Bearer&expires_in=1800&api_server=https://api02.iq.questrade.com/`)
+  // 6. React will then send a POST request to `/catch-qt-authorization` with the new `access_token`, `refresh_token`, and `expires_in` values.
+  // 7. Node will accept the values and check if they already exist. If they do, return an error via JSON. Otherwise Node will set them for the first time.
 };
-
-// exports.isLoggedIn = (req, res, next) => {
-//   if (req.isAuthenticated()) {
-//     // Yup! : )
-//     return next();
-//   }
-//   req.flash(
-//     'error',
-//     'You must be logged in to do that. Please login or <a href="/become-a-blizzard-tester">signup</a>.'
-//   );
-//   res.redirect('/login');
-// };
