@@ -1,16 +1,15 @@
-.percentage-graph {
+.percentage-graph__data-point {
   height: 50px;
-  width: 100%;
+  display: block;
+  background: rebeccapurple;
+  color: #353535;
+  font-weight: bolder;
+  overflow: visible;
+  padding-left: 3px;
 }
 
-.percentage-graph__data-point {
-  height: 100%;
-  display: inline-block;
-  background: rebeccapurple;
-  color: white;
-  font-weight: bolder;
-  overflow: hidden;
-  padding-left: 3px;
+.percentage-graph__data-point span {
+  display: none;
 }
 
 .percentage-graph__data-point:nth-of-type(1) {
@@ -42,4 +41,16 @@
 }
 .percentage-graph__data-point:nth-of-type(10) {
   background: aliceblue;
+}
+
+@media (min-width: 576px) {
+  .percentage-graph__data-point {
+    display: inline-block;
+    color: white;
+    overflow: hidden;
+  }
+
+  .percentage-graph__data-point span {
+    display: inline;
+  }
 }

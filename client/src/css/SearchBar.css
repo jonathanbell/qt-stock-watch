@@ -1,0 +1,5 @@
+@media (max-width: 576px) {
+  .form-inline button[type='submit'] {
+    margin-top: 1.5rem;
+  }
+}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'reactstrap';
-
-import '../css/PositionsList.css';
+import PercentagesChart from './PercentagesChart';
 
 export default class PositionsList extends Component {
   state = {
@@ -33,6 +32,7 @@ export default class PositionsList extends Component {
     const { positions } = this.state;
     return (
       <div>
+        <h2>Account Positions</h2>
         <Table responsive striped>
           <thead>
             <tr>
@@ -87,16 +87,7 @@ export default class PositionsList extends Component {
             ))}
           </tbody>
         </Table>
-        <div className="percentage-graph mb-2">
-          {positions.map(position => (
-            <div
-              style={{ width: `${position.percentageOfAccount.toFixed(3)}%` }}
-              className="percentage-graph__data-point"
-            >
-              {position.symbol} ({position.percentageOfAccount.toFixed(2)} %)
-            </div>
-          ))}
-        </div>
+        <PercentagesChart positions={this.state.positions} />
       </div>
     );
   }
