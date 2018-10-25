@@ -1,0 +1,19 @@
+.search-results {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 1rem;
+}
+
+.search-results .alert {
+  grid-column: 1 / -1;
+}
+
+.search-results .card {
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 576px) {
+  .search-results {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

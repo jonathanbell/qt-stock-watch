@@ -14,8 +14,8 @@ class App extends Component {
           <h1>QT Stock Watch</h1>
         </header>
         <Navigation />
-        <PositionsList />
         <SearchBar />
+        <PositionsList />
       </div>
     );
   }

@@ -56,6 +56,14 @@ const getStocksByIds = async (req, res, ids) => {
   return symbols;
 };
 
+const makeSymbolIdString = stocks => {
+  let ids = '';
+  stocks.forEach((stock, index) => {
+    ids += `${stock.symbolId}${index < stocks.length - 1 ? ',' : ''}`;
+  });
+  return ids;
+};
+
 const getPositions = async (req, res) => {
   const primaryAccount = await getPrimaryAccountNumber(req, res);
 
@@ -73,12 +81,7 @@ const getPositions = async (req, res) => {
 
   const positions = await positionsResponse.json();
 
-  let ids = '';
-  positions.positions.forEach((position, index) => {
-    ids += `${position.symbolId}${
-      index < positions.positions.length - 1 ? ',' : ''
-    }`;
-  });
+  const ids = makeSymbolIdString(positions.positions);
 
   const symbols = await getStocksByIds(req, res, ids);
 
@@ -155,5 +158,11 @@ exports.searchSymbol = async (req, res) => {
 
   const symbols = await searchResponse.json();
 
-  res.json(symbols.symbols);
+  if (symbols.symbols.length) {
+    const ids = makeSymbolIdString(symbols.symbols);
+    const stocks = await getStocksByIds(req, res, ids);
+    res.json(stocks.symbols);
+  } else {
+    res.json([]);
+  }
 };

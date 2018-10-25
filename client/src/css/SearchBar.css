@@ -3,3 +3,9 @@
     margin-top: 1.5rem;
   }
 }
+
+.preload-icon {
+  border-radius: 5px;
+  width: 30px;
+  margin-left: 0.5rem;
+}
