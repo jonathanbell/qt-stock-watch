@@ -19,7 +19,6 @@ export default class SearchBar extends Component {
       this.stockSymbolValue.value
     ).catch(err => console.error(err));
     this.setState({ stocks });
-
     this.setState({ searchResults: stocks.length });
   };
 
@@ -29,6 +28,7 @@ export default class SearchBar extends Component {
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
     this.setState({ searchResultsLoading: false });
+    this.setState({ searchResultsLoaded: true });
     return body;
   };
 
@@ -36,12 +36,22 @@ export default class SearchBar extends Component {
   updateInput = e => {
     this.setState({
       stockSymbolInput: e.target.value
-        // no whitespace at the ends
-        .trim()
-        // limit of 8 chars
-        .substring(0, 8)
+        // no trailing whitespace
+        //.trim()
+        // limit of 12 chars
+        .substring(0, 12)
         // all uppercase
         .toUpperCase()
+    });
+  };
+
+  clearSearchResults = e => {
+    this.setState({
+      stockSymbolInput: '',
+      stocks: [],
+      searchResultsLoaded: false,
+      searchResultsLoading: false,
+      searchResults: 1
     });
   };
 
@@ -66,9 +76,20 @@ export default class SearchBar extends Component {
               name="stockSymbolHardAss"
             />
           </FormGroup>
-          <Button color="primary" type="submit">
+          <Button className="ml-1" color="primary" type="submit">
             Submit
-          </Button>
+          </Button>{' '}
+          {this.state.searchResultsLoaded &&
+            this.state.searchResults &&
+            !this.state.searchResultsLoading && (
+              <Button
+                className="ml-1"
+                color="secondary"
+                onClick={this.clearSearchResults}
+              >
+                Clear
+              </Button>
+            )}
         </Form>
         <div className="search-results">
           {this.state.searchResultsLoading && (

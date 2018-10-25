@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 
 import Navigation from './components/Navigation';
-import PositionsList from './components/PositionsList';
 import SearchBar from './components/SearchBar';
+import PositionsList from './components/PositionsList';
+import WatchList from './components/WatchList';
 
 import './css/App.css';
 
@@ -16,6 +17,7 @@ class App extends Component {
         <Navigation />
         <SearchBar />
         <PositionsList />
+        <WatchList />
       </div>
     );
   }

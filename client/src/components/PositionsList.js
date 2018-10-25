@@ -81,7 +81,17 @@ export default class PositionsList extends Component {
                       : 'text-success'
                   }`}
                 >
-                  <td>{position.symbol}</td>
+                  <td>
+                    <a
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      href={`https://my.questrade.com/trading/quote/${
+                        position.symbol
+                      }`}
+                    >
+                      {position.symbol}
+                    </a>
+                  </td>
                   <td>{position.openQuantity}</td>
                   <td>${position.averageEntryPrice.toFixed(2)}</td>
                   <td>${position.currentPrice.toFixed(2)}</td>

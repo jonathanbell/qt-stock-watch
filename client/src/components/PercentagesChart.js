@@ -6,7 +6,7 @@ export default class PercentagesChart extends Component {
   render() {
     const positions = this.props.positions;
     return (
-      <div className="percentage-graph mb-2">
+      <div className="percentage-graph mb-2 mt-2">
         {positions.map(position => (
           <div
             key={position.symbolId}

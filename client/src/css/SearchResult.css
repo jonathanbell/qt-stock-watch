@@ -12,7 +12,7 @@
   margin-bottom: 1rem;
 }
 
-@media (min-width: 576px) {
+@media (min-width: 786px) {
   .search-results {
     grid-template-columns: repeat(4, 1fr);
   }
