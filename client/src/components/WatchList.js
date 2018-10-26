@@ -27,6 +27,22 @@ export default class WatchList extends Component {
     this.setState({ watchlist });
   };
 
+  handleRemove = async symbolId => {
+    // Make the API call to the server to remove the symbol from the watchlist
+    const response = await fetch(`/api/v1/watchlist/remove/${symbolId}`, {
+      method: 'delete'
+    }).catch(err => console.error(err));
+    const newWatchlist = await response.json();
+    if (response.status !== 200) throw Error(newWatchlist.message);
+
+    // Handle visually removing the "stock card"
+    this.setState({
+      watchlist: this.state.watchlist.filter(stock =>
+        newWatchlist.includes(stock.symbolId.toString())
+      )
+    });
+  };
+
   render() {
     const { watchlist } = this.state;
     return (
@@ -54,12 +70,17 @@ export default class WatchList extends Component {
           </Alert>
         )}
 
+        {this.state.watchListLoaded && <h2>Watch List</h2>}
         {this.state.watchListLoaded &&
           !watchlist.length && <p>Your watchlist is empty.</p>}
-        {this.state.watchListLoaded && watchlist.length && <h2>Watch List</h2>}
         <div className="search-results">
           {watchlist.map(stock => (
-            <Stock key={stock.symbolId} stock={stock} />
+            <Stock
+              key={stock.symbolId}
+              handleRemove={this.handleRemove}
+              watched={true}
+              stock={stock}
+            />
           ))}
         </div>
       </div>

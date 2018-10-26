@@ -76,11 +76,11 @@ export default class SearchBar extends Component {
               name="stockSymbolHardAss"
             />
           </FormGroup>
-          <Button className="ml-1" color="primary" type="submit">
+          <Button className="ml-2" color="primary" type="submit">
             Submit
-          </Button>{' '}
+          </Button>
           {this.state.searchResultsLoaded &&
-            this.state.searchResults &&
+            this.state.searchResults.length &&
             !this.state.searchResultsLoading && (
               <Button
                 className="ml-1"

@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Card, CardHeader, CardBody, CardTitle, CardText } from 'reactstrap';
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardFooter,
+  CardBody,
+  CardTitle,
+  CardText
+} from 'reactstrap';
 
 import '../css/Stock.css';
 
@@ -41,6 +49,23 @@ export default class Stock extends Component {
             </CardText>
           )}
         </CardBody>
+        <CardFooter>
+          {this.props.watched ? (
+            <Button
+              color="danger"
+              // lower-case because react complains otherwise..
+              symbolid={stock.symbolId}
+              title="Remove from watchlist"
+              onClick={() => this.props.handleRemove(stock.symbolId)}
+            >
+              Remove
+            </Button>
+          ) : (
+            <Button title="Add to watchlist" color="primary">
+              Watch
+            </Button>
+          )}
+        </CardFooter>
       </Card>
     );
   }

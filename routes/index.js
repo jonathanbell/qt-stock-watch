@@ -28,6 +28,11 @@ router.get(
   catchErrors(accountController.getWatchlistStocks)
 );
 
+router.delete(
+  '/api/v1/watchlist/remove/:symbolId',
+  catchErrors(userController.removeSymbolFromWatchlist)
+);
+
 /**
  * OAuth callbacks - not complete
  */
