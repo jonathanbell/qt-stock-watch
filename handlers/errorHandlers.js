@@ -20,6 +20,7 @@ exports.notFound = (req, res, next) => {
 // Based on `process.env.NODE_ENV`
 exports.developmentErrors = (err, req, res, next) => {
   err.stack = err.stack || '';
+  console.error('Error', err.stack);
   const errorDetails = {
     message: err.message,
     status: err.status,

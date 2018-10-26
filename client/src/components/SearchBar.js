@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import SearchResult from './SearchResult';
+import Stock from './Stock';
 
 import '../css/SearchBar.css';
 
@@ -108,8 +108,10 @@ export default class SearchBar extends Component {
             )}
           {stocks.map(stock => {
             if (stock.securityType === 'Stock') {
-              return <SearchResult key={stock.symbolId} stock={stock} />;
+              // return null;
+              return <Stock key={stock.symbolId} stock={stock} />;
             }
+            return null;
           })}
         </div>
       </div>

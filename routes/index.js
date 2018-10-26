@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const accountController = require('../controllers/accountController');
+const userController = require('../controllers/userController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
 /**
@@ -18,6 +19,13 @@ router.get(
   '/api/v1/symbols/search/:prefix',
   catchErrors(authController.getQuesttradeAuthorizationToken),
   catchErrors(accountController.searchSymbol)
+);
+
+router.get(
+  '/api/v1/watchlist',
+  catchErrors(userController.getUser),
+  catchErrors(authController.getQuesttradeAuthorizationToken),
+  catchErrors(accountController.getWatchlistStocks)
 );
 
 /**

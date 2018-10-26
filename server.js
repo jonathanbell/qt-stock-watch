@@ -17,6 +17,7 @@ mongoose.connection.on('error', err => {
 
 // Import mongoDB models:
 require('./models/Auth');
+require('./models/User');
 
 // Require our Express app
 const app = require('./app');

@@ -17,14 +17,13 @@ const getPrimaryAccountNumber = async (req, res) => {
     }`
   );
 
-  // if (response.status >= 300) {
-  //   console.error(
-  //     `Bad HTTP status from https://login.questrade.com/oauth2/token. HTTP status: ${
-  //       res.status
-  //     }`
-  //   );
-  //   return next();
-  // }
+  if (accountsResponse.status >= 300) {
+    console.error(
+      `Bad HTTP status from https://login.questrade.com/oauth2/token. HTTP status: ${
+        accountsResponse.status
+      }`
+    );
+  }
 
   const accounts = await accountsResponse.json();
 
@@ -165,4 +164,23 @@ exports.searchSymbol = async (req, res) => {
   } else {
     res.json([]);
   }
+};
+
+exports.getWatchlistStocks = async (req, res) => {
+  if (!req.user) {
+    // TODO: Handle this better
+    res.json([]);
+  }
+
+  if (!req.user.watchlist.length) {
+    res.json([]);
+  }
+
+  let ids = '';
+  req.user.watchlist.forEach((symbolId, index) => {
+    ids += `${symbolId}${index < req.user.watchlist.length - 1 ? ',' : ''}`;
+  });
+
+  const stocks = await getStocksByIds(req, res, ids);
+  res.json(stocks.symbols);
 };

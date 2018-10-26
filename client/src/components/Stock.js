@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Card, CardHeader, CardBody, CardTitle, CardText } from 'reactstrap';
 
-import '../css/SearchResult.css';
+import '../css/Stock.css';
 
-export default class SearchResult extends Component {
+export default class Stock extends Component {
   render() {
     const { stock } = this.props;
     return (

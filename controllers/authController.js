@@ -20,8 +20,8 @@ exports.getQuesttradeAuthorizationToken = async (req, res, next) => {
   }
 
   const accessTokenExipry = moment(qtClient.updated).add(
-    // Subtract 10 minutes from possible expiry time, just to be sure.
-    qtClient.expires_in - 600,
+    // Subtract 50% from possible expiry time, just to be sure.
+    qtClient.expires_in - qtClient.expires_in * 0.5,
     'seconds'
   );
 
