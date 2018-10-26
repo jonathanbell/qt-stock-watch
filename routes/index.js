@@ -28,13 +28,18 @@ router.get(
   catchErrors(accountController.getWatchlistStocks)
 );
 
+router.post(
+  '/api/v1/watchlist/add/:symbolId',
+  catchErrors(userController.addSymbolToWatchlist)
+);
+
 router.delete(
   '/api/v1/watchlist/remove/:symbolId',
   catchErrors(userController.removeSymbolFromWatchlist)
 );
 
 /**
- * OAuth callbacks - not complete
+ * OAuth callbacks - (not complete)
  */
 router.post(
   '/catch-qt-authorization',

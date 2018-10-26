@@ -20,6 +20,7 @@ export default class PositionsList extends Component {
     });
 
     this.setState({ positions });
+    this.props.getWatchlist();
   }
 
   getPositions = async () => {

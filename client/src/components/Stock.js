@@ -34,7 +34,11 @@ export default class Stock extends Component {
           )}
           <CardText>{stock.description}</CardText>
           {stock.dividend > 0.5 && (
-            <CardText>Dividend: {stock.dividend}</CardText>
+            <CardText
+              className={`${stock.dividend > 1 ? 'text-success' : 'text-info'}`}
+            >
+              Dividend: {stock.dividend}
+            </CardText>
           )}
           {stock.pe && (
             <CardText className={stock.pe < 5 ? 'text-success' : ''}>
@@ -50,7 +54,7 @@ export default class Stock extends Component {
           )}
         </CardBody>
         <CardFooter>
-          {this.props.watched ? (
+          {this.props.watched === true ? (
             <Button
               color="danger"
               // lower-case because react complains otherwise..
@@ -60,10 +64,19 @@ export default class Stock extends Component {
             >
               Remove
             </Button>
-          ) : (
-            <Button title="Add to watchlist" color="primary">
+          ) : this.props.watched === false ? (
+            <Button
+              title="Add to watchlist"
+              color="primary"
+              onClick={() => this.props.handleAdd(stock.symbolId)}
+              symbolid={stock.symbolId}
+            >
               Watch
             </Button>
+          ) : (
+            <a className="btn btn-info" href="#watch-list">
+              Already watching
+            </a>
           )}
         </CardFooter>
       </Card>

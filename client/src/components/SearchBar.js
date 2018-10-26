@@ -3,6 +3,7 @@ import { Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import Stock from './Stock';
 
 import '../css/SearchBar.css';
+import { watch } from 'fs';
 
 export default class SearchBar extends Component {
   state = {
@@ -53,6 +54,24 @@ export default class SearchBar extends Component {
       searchResultsLoading: false,
       searchResults: 1
     });
+  };
+
+  handleAdd = async symbolId => {
+    // Make the API call to the server to remove the symbol from the watchlist
+    const response = await fetch(`/api/v1/watchlist/add/${symbolId}`, {
+      method: 'post'
+    }).catch(err => console.error(err));
+    const newWatchlist = await response.json();
+    if (response.status !== 200) throw Error(newWatchlist.message);
+
+    // Handle visually removing the "stock card"
+    // 1. Remove the card from the search results
+    this.setState({
+      stocks: this.state.stocks.filter(stock => stock.symbolId !== symbolId)
+    });
+    this.setState({ searchResults: this.state.stocks.length });
+    // 2. Add the card to the watchlist by recalling `getWatchlist()`
+    this.props.getWatchlist();
   };
 
   render() {
@@ -108,8 +127,21 @@ export default class SearchBar extends Component {
             )}
           {stocks.map(stock => {
             if (stock.securityType === 'Stock') {
-              // return null;
-              return <Stock key={stock.symbolId} stock={stock} />;
+              let watched = false;
+              this.props.watchlistState.watchlist.forEach(s => {
+                if (s.symbolId.toString() === stock.symbolId.toString()) {
+                  watched = 'watched';
+                }
+              });
+              return (
+                <Stock
+                  key={stock.symbolId}
+                  stock={stock}
+                  watched={watched}
+                  handleAdd={this.handleAdd}
+                  getWatchlist={this.props.getWatchlist}
+                />
+              );
             }
             return null;
           })}
