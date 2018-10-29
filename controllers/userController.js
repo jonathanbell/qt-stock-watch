@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const User = mongoose.model('User');
 
 exports.getUser = async (req, res, next) => {
-  const user = await User.findOne({ email: 'jonathanbell.ca@gmail.com' });
+  const user = await User.findOne({ email: process.env.USER_EMAIL });
 
   if (!user) {
     throw Error(
@@ -16,7 +16,7 @@ exports.getUser = async (req, res, next) => {
 };
 
 exports.removeSymbolFromWatchlist = async (req, res) => {
-  const user = await User.findOne({ email: 'jonathanbell.ca@gmail.com' });
+  const user = await User.findOne({ email: process.env.USER_EMAIL });
 
   if (!user) {
     throw Error(
@@ -29,7 +29,7 @@ exports.removeSymbolFromWatchlist = async (req, res) => {
   );
 
   const newUser = await User.findOneAndUpdate(
-    { email: 'jonathanbell.ca@gmail.com' },
+    { email: process.env.USER_EMAIL },
     { watchlist },
     {
       new: true,
@@ -42,7 +42,7 @@ exports.removeSymbolFromWatchlist = async (req, res) => {
 };
 
 exports.addSymbolToWatchlist = async (req, res) => {
-  const user = await User.findOne({ email: 'jonathanbell.ca@gmail.com' });
+  const user = await User.findOne({ email: process.env.USER_EMAIL });
 
   if (!user) {
     throw Error(
@@ -56,7 +56,7 @@ exports.addSymbolToWatchlist = async (req, res) => {
   }
 
   const newUser = await User.findOneAndUpdate(
-    { email: 'jonathanbell.ca@gmail.com' },
+    { email: process.env.USER_EMAIL },
     { watchlist },
     {
       new: true,

@@ -29,10 +29,9 @@ exports.getQuesttradeAuthorizationToken = async (req, res, next) => {
     req.access_token = qtClient.access_token;
     req.api_server = qtClient.api_server;
     req.token_type = qtClient.token_type;
-    // TODO: remove
-    console.log('Access token expires:', accessTokenExipry);
-    console.log('Time now:', moment());
-    console.log('Old oAuth token is still valid:', req.access_token);
+    // console.log('Access token expires:', accessTokenExipry);
+    // console.log('Time now:', moment());
+    // console.log('Old oAuth token is still valid:', req.access_token);
     return next();
   }
 
@@ -84,18 +83,17 @@ exports.getQuesttradeAuthorizationToken = async (req, res, next) => {
   req.api_server = newAuthKeys.api_server;
   req.token_type = newAuthKeys.token_type;
 
-  // TODO: remove this
-  console.log(
-    'Got new oAuth access_token from Questrade: ',
-    req.access_token,
-    newAuthKeys
-  );
+  // console.log(
+  //   'Got new oAuth access_token from Questrade: ',
+  //   req.access_token,
+  //   newAuthKeys
+  // );
 
   next();
 };
 
 exports.getInitialQtOauth = async (req, res, next) => {
-  // TODO:
+  // TODO: ---------------------------------------------------------------------
   // Following the "Implicit Grant OAuth flow" here: https://www.questrade.com/api/documentation/authorization
   // *IF* the configuration options do not exist ALREADY in the database (need to remove them upon app de-authorization):
   // 1. Register a personal application with Questrade and get a API consumer key (aka client_id)

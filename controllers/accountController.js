@@ -10,13 +10,6 @@ const getPrimaryAccountNumber = async (req, res) => {
     throw new Error(error);
   });
 
-  console.log(
-    // TODO: remove me later
-    `Requested: ${req.api_server}v1/accounts ${req.token_type} ${
-      req.access_token
-    }`
-  );
-
   if (accountsResponse.status >= 300) {
     console.error(
       `Bad HTTP status from https://login.questrade.com/oauth2/token. HTTP status: ${

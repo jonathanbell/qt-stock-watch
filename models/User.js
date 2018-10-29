@@ -10,7 +10,7 @@ const userSchema = new Schema({
     lowercase: true,
     trim: true,
     required: true,
-    default: 'jonathanbell.ca@gmail.com'
+    default: process.env.USER_EMAIL
   },
   watchlist: [{ type: String }]
 });

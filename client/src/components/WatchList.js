@@ -4,7 +4,6 @@ import Stock from './Stock';
 
 export default class WatchList extends Component {
   render() {
-    console.log(this.props);
     const { watchlist } = this.props.watchlistState;
     return (
       <div>
