@@ -33,16 +33,21 @@ app.use((req, res, next) => {
 
 // Attempt to limit access to our API
 app.use((req, res, next) => {
-  // If the request doesn't come from blizzardjudge.com or from the Zeit deployment URL:
-  // if (req.hostname !== process.env.APPHOST && req.hostname !== 'localhost') {
-  //   // Redirect to blizzardjudge.com keeping the pathname and querystring intact.
-  //   return res.redirect(`https://${process.env.APPHOST}${req.originalUrl}`);
-  // }
+  // If the request doesn't come from our app or from the Zeit deployment URL:
+  if (
+    req.hostname === process.env.NOW_URL ||
+    req.hostname === 'localhost' ||
+    req.hostname === process.env.APP_HOST
+  ) {
+    next();
+  } else {
+    console.error(`${req.hostname} requested data from our API.`);
+    // Return an error
+    res.status(403);
+    res.send('Please access this API from inside the application.');
+  }
 
-  console.log('req.hostname:', req.hostname);
-  // return error code and message?
-
-  next();
+  return;
 });
 
 // Handle all of our own (middleware) routes

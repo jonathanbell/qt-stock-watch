@@ -17,6 +17,8 @@ The Questrade OAuth API refreshes its tokens often. The app connects to a Mongo 
 1. Add `https://your-applications-url.com/catch-qt-authorization` as your callback URL for the QT app
 1. Copy your app ID (aka Questrade Consumer Key) into the appropriate spot in `.env.development`
 1. Add your email to `.env.development` in the appropriate spot
+1. Add the domain where your QT Stock Watch will be hosted at under the `APP_HOST` section of `.env.development`
+1. Copy `.env.development` to `.env.production` and edit the values for the production version of the app
 
 ### Setup Questrade OAuth (TODO)
 
@@ -41,4 +43,4 @@ Maybe, but, probably not. I made some assumptions when making this dashboard:
 ## TODOs
 
 1. ~~Heroku(?) or Questrade(?) expire the tokens when you wouldn't expect them to expire. Need to find the cause of this as it's a big crux to a well working app. See Issue #1: <https://github.com/jonathanbell/qt-stock-watch/issues/1>~~
-1. Proper OAuth sign up process
+1. Proper OAuth sign up process (see `authController.getInitialQtOauth`)

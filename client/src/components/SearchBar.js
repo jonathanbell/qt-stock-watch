@@ -3,7 +3,6 @@ import { Alert, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import Stock from './Stock';
 
 import '../css/SearchBar.css';
-import { watch } from 'fs';
 
 export default class SearchBar extends Component {
   state = {
@@ -99,7 +98,6 @@ export default class SearchBar extends Component {
             Submit
           </Button>
           {this.state.searchResultsLoaded &&
-            this.state.searchResults.length &&
             !this.state.searchResultsLoading && (
               <Button
                 className="ml-1"
