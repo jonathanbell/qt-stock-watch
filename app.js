@@ -36,6 +36,7 @@ app.use((req, res, next) => {
   // If the request doesn't come from our app or from the Zeit deployment URL:
   if (
     req.hostname === process.env.NOW_URL ||
+    req.hostname === 'qt-stock-watch.now.sh' ||
     req.hostname === 'localhost' ||
     req.hostname === process.env.APP_HOST
   ) {
