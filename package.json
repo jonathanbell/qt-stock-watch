@@ -6,7 +6,7 @@
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "start": "node server.js",
-    "deploy": "cd client && npm run build && cd .. && now && now alias"
+    "deploy": "cd client && npm run build && cd .. && now && now alias && now scale qt-stock-watch.now.sh 1 1"
   },
   "engines": {
     "node": ">=8.11.3 <=9.11.2"
