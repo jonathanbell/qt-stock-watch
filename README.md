@@ -1,5 +1,7 @@
 # QT Stock Watch
 
+**IMPORTANT:** This app is offline due to an error with the Questrade API. See [issue #3](https://github.com/jonathanbell/qt-stock-watch/issues/3).
+
 QT Stock Watch allows you to view your Questrade account without logging in. It helps when you want to check your stock positions quickly. The web application cannot make trades. It only visualizes your primary Questrade account. However, **please be aware** that this application will display your live Questrade positions to the Internet. If you have any reservations about this, please do not use this app.
 
 The Questrade OAuth API refreshes its tokens often. The app connects to a Mongo database in order to store the refresh token and some other small pieces of information about its primary user (me).
@@ -19,6 +21,7 @@ The Questrade OAuth API refreshes its tokens often. The app connects to a Mongo 
 1. Add your email to `.env.development` in the appropriate spot
 1. Add the domain where your QT Stock Watch will be hosted at under the `APP_HOST` section of `.env.development`
 1. Copy `.env.development` to `.env.production` and edit the values for the production version of the app
+1. `npm run dev` will get you up and developing.
 
 ### Setup Questrade OAuth (TODO)
 
