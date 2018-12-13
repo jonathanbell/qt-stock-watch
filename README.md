@@ -1,6 +1,6 @@
 # QT Stock Watch
 
-**IMPORTANT:** This app is offline due to an error with the Questrade API. See [issue #3](https://github.com/jonathanbell/qt-stock-watch/issues/3).
+~~**IMPORTANT:** This app is offline due to an error with the Questrade API. See [issue #3](https://github.com/jonathanbell/qt-stock-watch/issues/3).~~ Apparently the Questrade API is working again. One can only hope!
 
 QT Stock Watch allows you to view your Questrade account without logging in. It helps when you want to check your stock positions quickly. The web application cannot make trades. It only visualizes your primary Questrade account. However, **please be aware** that this application will display your live Questrade positions to the Internet. If you have any reservations about this, please do not use this app.
 
